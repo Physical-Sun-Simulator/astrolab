@@ -3,7 +3,7 @@
 <package format="3">
   <name>astrolab</name>
   <version>0.0.0</version>
-  <description>ROS2 package which provides an UI for the Physical Sunlight Simulator</description>
+  <description>ROS2 package which provides the user interface, arm, table and digital twin nodes and connections for the Physical Sunlight Simulator</description>
   <maintainer email="a.oostenbrug@student.tue.nl">Aqiel Oostenbrug</maintainer>
   <license>TODO: License declaration</license>
 

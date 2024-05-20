@@ -5,11 +5,11 @@ from std_msgs.msg import String
 from simulation_interfaces.srv import Speed # type: ignore
 from simulation_interfaces.action import Angle # type: ignore
 
-class astrolab_node(Node):
-    """Class that provides a node for astroblab"""
+class user_interface_node(Node):
+    """Class that provides a node for user_interface"""
 
     def __init__(self):
-        super().__init__('astrolab_node')
+        super().__init__('user_interface_node')
         self.arm_angle_subscription = self.create_subscription(
             String,
             'arm_angle_topic',
@@ -98,7 +98,7 @@ class astrolab_node(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    node = astrolab_node()
+    node = user_interface_node()
 
     rclpy.spin(node)
     node.destroy_node()
