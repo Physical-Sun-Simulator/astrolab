@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'astrolab = astrolab.astrolab:main'
+            'astrolab = astrolab.astrolab_node:main'
         ],
     },
 )
