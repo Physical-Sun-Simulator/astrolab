@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
-from std_msgs.msg import String
+from std_msgs.msg import Float64
 from simulation_interfaces.srv import Speed # type: ignore
 from simulation_interfaces.action import Angle # type: ignore
 
@@ -11,22 +11,22 @@ class user_interface_node(Node):
     def __init__(self):
         super().__init__('user_interface_node')
         self.arm_angle_subscription = self.create_subscription(
-            String,
+            Float64,
             'arm_angle_topic',
             self.arm_angle_listener_callback,
             10)
         self.arm_speed_subscription = self.create_subscription(
-            String,
+            Float64,
             'arm_speed_topic',
             self.arm_speed_listener_callback,
             10)
         self.table_angle_subscription = self.create_subscription(
-            String,
+            Float64,
             'table_angle_topic',
             self.table_angle_listener_callback,
             10)
         self.table_speed_subscription = self.create_subscription(
-            String,
+            Float64,
             'table_speed_topic',
             self.table_speed_listener_callback,
             10)
@@ -44,8 +44,8 @@ class user_interface_node(Node):
         self.change_arm_speed(42.0)
         self.change_table_speed(42.0)
         
-        self.arm_send_goal(10)
-        self.table_send_goal(10)
+        self.arm_send_goal(-10.0)
+        self.table_send_goal(10.0)
         
     def arm_angle_listener_callback(self, msg):
         self.get_logger().info('arm_angle_listener_callback: "%s"' % msg.data)

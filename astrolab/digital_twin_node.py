@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from std_msgs.msg import Float64
 
 class digital_twin_node(Node):
     """Class that provides a node for the digital twin"""
@@ -8,22 +8,22 @@ class digital_twin_node(Node):
     def __init__(self):
         super().__init__('digital_twin_node')
         self.arm_angle_subscription = self.create_subscription(
-            String,
+            Float64,
             'arm_angle_topic',
             self.arm_angle_listener_callback,
             10)
         self.arm_speed_subscription = self.create_subscription(
-            String,
+            Float64,
             'arm_speed_topic',
             self.arm_speed_listener_callback,
             10)
         self.table_angle_subscription = self.create_subscription(
-            String,
+            Float64,
             'table_angle_topic',
             self.table_angle_listener_callback,
             10)
         self.table_speed_subscription = self.create_subscription(
-            String,
+            Float64,
             'table_speed_topic',
             self.table_speed_listener_callback,
             10)
