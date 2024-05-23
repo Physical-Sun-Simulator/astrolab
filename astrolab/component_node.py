@@ -69,7 +69,6 @@ class ComponentNode(Node): # TODO: Improve action server implementation
                 feedback_msg.current_angle = self.angle
                 goal_handle.publish_feedback(feedback_msg)
                 self.get_logger().info(f'[Action] Current angle = {self.angle}')
-                self.topic_timer_callback
                 self.angle += delta
                 time.sleep(1)
 

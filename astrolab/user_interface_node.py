@@ -1,9 +1,10 @@
-import rclpy
+import rclpy, math
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from std_msgs.msg import Float64
 from simulation_interfaces.srv import Speed # type: ignore
 from simulation_interfaces.action import Angle # type: ignore
+
 
 class user_interface_node(Node):
     """Class that provides a node for user_interface"""
@@ -44,7 +45,7 @@ class user_interface_node(Node):
         self.change_arm_speed(42.0)
         self.change_table_speed(42.0)
         
-        self.arm_send_goal(-10.0)
+        self.arm_send_goal(90.0)
         self.table_send_goal(10.0)
         
     def arm_angle_listener_callback(self, msg):
