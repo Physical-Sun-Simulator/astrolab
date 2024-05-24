@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect
 from astrolab.user_interface_node import user_interface_node
-import rclpy
+from astrolab.sun_position import get_sun_elevation_angle, get_sun_azimuth_angle, get_hour_angle, get_true_solar_time, get_equation_of_time, get_sun_declination
+import rclpy, math
 
 app = Flask(__name__)
 
@@ -9,18 +10,85 @@ node = user_interface_node()
 
 @app.route("/")
 def index():
-    return """<form action="/angle" method="POST" class="combo-box">
+    return """<h2>Arm</h2>
+            <form action="/arm_angle" method="POST" class="combo-box">
                 <input type="text" name="number" placeholder="Insert an angle">
+                <input type="submit" value="submit" />
+            </form>
+            <form action="/arm_speed" method="POST" class="combo-box">
+                <input type="text" name="number" placeholder="Insert a speed">
+                <input type="submit" value="submit" />
+            </form>
+            <h2>Table</h2>
+            <form action="/table_angle" method="POST" class="combo-box">
+                <input type="text" name="number" placeholder="Insert an angle">
+                <input type="submit" value="submit" />
+            </form>
+            <form action="/table_speed" method="POST" class="combo-box">
+                <input type="text" name="number" placeholder="Insert a speed">
+                <input type="submit" value="submit" />
+            </form>
+            <h2>Simulate sun</h2>
+            <form action="/simulate" method="POST" class="combo-box">
+                <input type="text" name="geographical_latitude" placeholder="Insert geographical latitude">
+                <input type="text" name="geographical_longitude" placeholder="Insert geographical longitude">
+                <input type="text" name="local_clock_time" placeholder="Insert local clock time">
+                <input type="text" name="day" placeholder="Insert day">
                 <input type="submit" value="submit" />
             </form>"""
 
-@app.route('/angle', methods = ['POST'])
-def angle():
+@app.route('/arm_angle', methods = ['POST'])
+def arm_angle():
     if request.method == 'POST':
         input = float(request.form.getlist('number')[0])
         rclpy.spin_once(node,timeout_sec=1.0)
         node.arm_send_goal(input)
         return redirect("/")
+    
+@app.route('/arm_speed', methods = ['POST'])
+def arm_speed():
+    if request.method == 'POST':
+        input = float(request.form.getlist('number')[0])
+        rclpy.spin_once(node,timeout_sec=1.0)
+        node.change_arm_speed(input)
+        return redirect("/")
+    
+@app.route('/table_angle', methods = ['POST'])
+def table_angle():
+    if request.method == 'POST':
+        input = float(request.form.getlist('number')[0])
+        rclpy.spin_once(node,timeout_sec=1.0)
+        node.table_send_goal(input)
+        return redirect("/")
+    
+@app.route('/table_speed', methods = ['POST'])
+def table_speed():
+    if request.method == 'POST':
+        input = float(request.form.getlist('number')[0])
+        rclpy.spin_once(node,timeout_sec=1.0)
+        node.change_table_speed(input)
+        return redirect("/")
+    
+@app.route('/simulate', methods = ['POST'])
+def calculate():
+    if request.method == 'POST':
+        geographical_latitude = math.radians(float(request.form.getlist('geographical_latitude')[0]))
+        geographical_longitude = math.radians(float(request.form.getlist('geographical_longitude')[0]))
+        local_clock_time = float(request.form.getlist('local_clock_time')[0])
+        day = float(request.form.getlist('day')[0])
+        equation_of_time = get_equation_of_time(day)
+        true_solar_time = get_true_solar_time(local_clock_time, geographical_longitude, equation_of_time)
+        hour_angle = get_hour_angle(true_solar_time)
+        sun_declination = get_sun_declination(day)
+        sun_elevation_angle = get_sun_elevation_angle(geographical_latitude, sun_declination, hour_angle)
+        sun_azimuth_angle = get_sun_azimuth_angle(sun_elevation_angle, geographical_latitude, sun_declination, true_solar_time)
+        rclpy.spin_once(node,timeout_sec=1.0)
+        node.arm_send_goal(math.degrees(sun_elevation_angle))
+        node.table_send_goal(math.degrees(sun_azimuth_angle))
+        return f"""<h1>Starting temporary algorithm!!!</h1>
+                    <h2>Calculated Angles:</h2>
+                    <h3>Sun Elevation Angle (Arm) = {math.degrees(sun_elevation_angle)}</h3>
+                    <h3>Sun Azimuth Angle (Table) = {math.degrees(sun_azimuth_angle)}</h3>"""
     
 def main():
     app.run(debug=True)

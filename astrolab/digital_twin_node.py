@@ -41,17 +41,17 @@ class digital_twin_node(Node):
         self.table_speed_subscription
         
     def arm_angle_listener_callback(self, msg):
-        self.get_logger().info('arm_angle_listener_callback: "%s"' % msg.data)
+        self.get_logger().info(f'[Topic]: Read arm angle = {msg.data}')
         self.updateModel(msg.data)
         
     def arm_speed_listener_callback(self, msg):
-        self.get_logger().info('arm_speed_listener_callback: "%s"' % msg.data)
+        self.get_logger().info(f'[Topic]: Read arm speed = {msg.data}')
         
     def table_angle_listener_callback(self, msg):
-        self.get_logger().info('table_angle_listener_callback: "%s"' % msg.data)
+        self.get_logger().info(f'[Topic]: Read table angle = {msg.data}')
         
     def table_speed_listener_callback(self, msg):
-        self.get_logger().info('table_speed_listener_callback: "%s"' % msg.data)
+        self.get_logger().info(f'[Topic]: Read table speed = {msg.data}')
         
     def updateModel(self, angle):
         odom_trans = TransformStamped()

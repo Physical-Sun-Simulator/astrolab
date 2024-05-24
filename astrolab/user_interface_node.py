@@ -42,43 +42,37 @@ class user_interface_node(Node):
         self.table_angle_subscription 
         self.table_speed_subscription
         
-        self.change_arm_speed(42.0)
-        self.change_table_speed(42.0)
-        
-        self.arm_send_goal(90.0)
-        self.table_send_goal(10.0)
-        
     def arm_angle_listener_callback(self, msg):
-        self.get_logger().info('arm_angle_listener_callback: "%s"' % msg.data)
+        self.get_logger().info(f'[Topic]: Read arm angle = {msg.data}')
         
     def arm_speed_listener_callback(self, msg):
-        self.get_logger().info('arm_speed_listener_callback: "%s"' % msg.data)
+        self.get_logger().info(f'[Topic]: Read arm speed = {msg.data}')
         
     def table_angle_listener_callback(self, msg):
-        self.get_logger().info('table_angle_listener_callback: "%s"' % msg.data)
+        self.get_logger().info(f'[Topic]: Read table angle = {msg.data}')
         
     def table_speed_listener_callback(self, msg):
-        self.get_logger().info('table_speed_listener_callback: "%s"' % msg.data)
+        self.get_logger().info(f'[Topic]: Read table speed = {msg.data}')
         
     def change_arm_speed(self, speed):
         while not self.arm_speed_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('arm_speed_service not available, waiting again...')
+            self.get_logger().info('[Service] Waiting for arm_speed_service...')
     
         request = Speed.Request()
         request.speed = speed
         future = self.arm_speed_client.call_async(request)
         rclpy.spin_until_future_complete(self, future)
-        self.get_logger().info('Result of change_arm_speed: "%s" ' % future.result().response)
+        self.get_logger().info(f'[Service] Changed arm speed to {speed}')
         
     def change_table_speed(self, speed):
         while not self.table_speed_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('table_speed_service not available, waiting again...')
+            self.get_logger().info('[Service] Waiting for table_speed_service...')
     
         request = Speed.Request()
         request.speed = speed
         future = self.table_speed_client.call_async(request)
         rclpy.spin_until_future_complete(self, future)
-        self.get_logger().info('Result of change_table_speed: "%s" ' % future.result().response)
+        self.get_logger().info(f'[Service] Changed table speed to {speed}')
         
     def arm_send_goal(self, angle):
         goal_msg = Angle.Goal()

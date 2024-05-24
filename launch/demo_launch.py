@@ -1,18 +1,18 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, ExecuteProcess
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-
     urdf_file_name = 'dt.urdf.xml'
     urdf = os.path.join(
         get_package_share_directory('astrolab'),
         urdf_file_name)
+    
     with open(urdf, 'r') as infp:
         robot_desc = infp.read()
 
@@ -30,7 +30,24 @@ def generate_launch_description():
             arguments=[urdf]),
         Node(
             package='astrolab',
+            executable='arm',
+            name='arm',
+            output='screen'),
+        Node(
+            package='astrolab',
+            executable='table',
+            name='table',
+            output='screen'),
+        Node(
+            package='astrolab',
             executable='digital_twin',
             name='digital_twin',
             output='screen'),
+        ExecuteProcess(
+            cmd=['python3', 'src/astrolab/astrolab/webserver.py'],
+            name='webserver',
+            output='screen'),
+        ExecuteProcess(
+            cmd=['rviz2', '-d', 'install/astrolab/share/astrolab/dt.rviz'],
+            name='rviz'),
     ])

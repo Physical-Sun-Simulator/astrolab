@@ -65,7 +65,7 @@ class ComponentNode(Node): # TODO: Improve action server implementation
             feedback_msg = Angle.Feedback()
             feedback_msg.current_angle = self.angle
 
-            while self.angle != goal_handle.request.requested_angle:
+            while round(self.angle) != round(goal_handle.request.requested_angle, 0): # Change
                 feedback_msg.current_angle = self.angle
                 goal_handle.publish_feedback(feedback_msg)
                 self.get_logger().info(f'[Action] Current angle = {self.angle}')
