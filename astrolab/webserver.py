@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect
 from astrolab.user_interface_node import user_interface_node
-from astrolab.sun_position import get_sun_elevation_angle, get_sun_azimuth_angle, get_hour_angle, get_true_solar_time, get_equation_of_time, get_sun_declination
+from sun_position import get_sun_elevation_angle, get_sun_azimuth_angle, get_hour_angle, get_true_solar_time, get_equation_of_time, get_sun_declination
 import rclpy, math
 
 app = Flask(__name__)
