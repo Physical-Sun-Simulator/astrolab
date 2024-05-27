@@ -1,5 +1,13 @@
 # astrolab
-ROS2 package which provides the user interface, arm, table and digital twin nodes and connections for the Physical Sunlight Simulator
+ROS2 package which provides the user interface, arm, table and digital twin nodes and connections for the Physical Sunlight Simulator. Note that the following guides assumes the user is using Linux.
+
+## Table of Contents
+- [astrolab](#astrolab)
+  - [Table of Contents](#table-of-contents)
+  - [How to install](#how-to-install)
+  - [How to run the package for the first time](#how-to-run-the-package-for-the-first-time)
+  - [How to set up rqt for execution diagnostics](#how-to-set-up-rqt-for-execution-diagnostics)
+  - [How to set up rqt for connection diagnostics](#how-to-set-up-rqt-for-connection-diagnostics)
 
 ## How to install
 1. Make a ROS workspace as described [here](https://docs.ros.org/en/iron/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html)
@@ -16,17 +24,19 @@ ROS2 package which provides the user interface, arm, table and digital twin node
 5. Execute `ros2 launch astrolab demo_launch.py`
 6. Open `127.0.0.1` in a webbrowser
 
-## How to utilize rqt for diagnostics
+## How to set up rqt for execution diagnostics
 1. Run `source install/setup.bash` in the workspace directory
 2. Execute `rqt` in the workspace directory
-3. Open the "Basic" profile in the Profile tab
-4. Fill in `/arm_angle_topic/data` for the left most component
-5. Set the maximum to 90 for the left most component
-6. Fill in `/arm_speed_service/data` for the next component
-7. Set the maximum to 100
-8. Set the minimum to 0
-9. Fill in `/table_angle_topic/data` for the next component
-10. Set the maximum to 360
-11. Fill in `/table_speed_service/data` for th next component
-12. Set the maximum to 100
-13. Set the minimum to 0
+3. In the Perspectives tab click on important and select `Diagnostics - 1.perspective` in the rqt_perspectives folder.
+4. In the top-left most component (Console) click on Fit Columns.
+5. In the component on its right (Rotational) fill in `/arm_angle_topic/data` in the Topic textfield, click on Subscribe and fill in 90 in the Max Value textfield.
+6. In the component on its right (Bar) fill in `/arm_speed_service/data` in the Topic textfield, click on Subscribe, fill in 100 in the Max Value textfield and fill in 0 in the Min Value textfield.
+7. In the component on its right (Rotational) fill in `/table_angle_topic/data` in the Topic textfield, click on Subscrbie and fill in 260 in the Max Value textfield.
+8. In the component on its right (Bar) fill in `/table_speed_service/data` in the Topic textfield, click on Subscribe, fill in 100 in the Max Value textfield and fill in 0 in the Min Value textfield.
+9. In the down-left most component (Service Caller) set the Service dropdown to `/arm_speed_service`.
+10. In the down-right most component (Service Caller (2)) set the Service dropdown to `/table_speed_service`.
+
+## How to set up rqt for connection diagnostics
+1. Run `source install/setup.bash` in the workspace directory
+2. Execute `rqt` in the workspace directory
+3. In the Perspectives tab click on important and select `Diagnostics - 1.perspective` in the rqt_perspectives folder.
