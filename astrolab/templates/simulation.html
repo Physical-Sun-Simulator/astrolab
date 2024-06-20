@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<p id="description">Simulate daylight on a model provided a place, time and date</p>
+<form id="input">
+    <!-- <div id="location">
+        <label for="location-field">Location: </label>
+        <input id="location-field" class="field" type="text" placeholder="location" required/>
+    </div> -->
+    <div id="longitude">
+        <label for="longitude-field">Longitude: </label>
+        <input id="longitude-field" class="field" type="text" placeholder="longitude" required/>
+    </div>
+    <div id="latitude">
+        <label for="latitude-field">Latitude: </label>
+        <input id="latitude-field" class="field" type="text" placeholder="latitude" required/>
+    </div>
+    <div id="date">
+        <label for="date-field">Date: </label>
+        <input type="date" id="date-field" class="field" name="date" value="2024-06-12" min="0000-01-01" max="9999-12-31" />
+    </div>
+    <div id="time">
+        <label for="time-fie">Time: </label>
+        <input type="time" id="time-field" class="field" name="time" min="00:00" max="23:59" required />
+    </div>
+    <div id="controls">
+        <input type="button" id="start" value="Start" required>
+        <input type="button" id="stop" value="Stop" required>
+    </div>
+</form>
+{% endblock %}

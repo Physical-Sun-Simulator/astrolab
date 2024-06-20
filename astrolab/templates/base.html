@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title | capitalize}} - {{name}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> -->
+    <script src="{{url_for('static', filename='js/script.js')}}"></script> 
+    <!-- <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
+</head>
+
+<body>
+    <header>
+        <nav id="menu-button-extension" class="header-item">
+            <a id="menu-button" href="javascript:void(0)" onclick="changeMenu()">
+                <img src="{{url_for('static', filename='img/menu-bars.png')}}" alt="Menu">
+            </a>
+        </nav>
+        <a id="logo" class="header-item">{{name}}</a>
+    </header>
+    <main id="main">
+        <div id="menu">
+            {% for option in options %}
+            <a class="menu-content-item" href="/{{option}}">
+                <h2>{{option | capitalize }}</h2>
+            </a>
+            {% endfor %}
+        </div>
+        <aside id="configuration">
+            <div id="adjustment">
+                <h1 id="adjustment-title">{{title | capitalize}}</h1>
+                {% block content %}{% endblock %}
+            </div>
+            <div id="positions">
+                <h1 id="position-title">Configuration</h1>
+                <p id="position-description">Current configuration of the Physical Sun Simulator</p>
+                <form id="positions-configuration">
+                    <!-- <div id="status">
+                        <label for="status-field">Status: </label>
+                        <input id="status-field" class="field" type="text" readonly/>
+                    </div> -->
+                    <div id="elevation">
+                        <label for="elevation-field">Elevation: </label>
+                        <input type="text" id="elevation-field" class="field" name="elevation" readonly />
+                    </div>
+                    <div id="azimuth">
+                        <label for="azimuth-field">Azimuth: </label>
+                        <input type="text" id="azimuth-field" class="field" name="azimuth" readonly />
+                    </div>
+                </form>
+            </div>
+            <div id="about">
+                <h3>© Aqiel Oostenbrug</h3>
+            </div>
+        </aside>
+        <section id="canvas">
+            <!-- <h4>{{title}}</h4> -->
+            {% if title == 'simulation' %}
+                {% include 'map.html' %}
+            {% elif title == 'calibration' %}
+                {% include 'schematic.html' %}
+            {% elif title == 'dynamics' %}
+                {% include 'graph.html' %}
+            {% endif %}
+
+             <!-- <img id="map" src="{{url_for('static', filename='img/temp-map.png')}}" alt="Map" /> -->
+            <!-- <img src="{{url_for('static', filename='img/temp-map.webp')}}" /> -->
+             <!-- <div id="location">
+        <label for="location-field">Location: </label>
+        <input id="location-field" class="field" type="text" placeholder="location" required/>
+    </div> -->
+        </section>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<p id="description">Move the machine between two specific configurations for dynamic lighting</p>
+<form id="input">
+    <div id="elevation-one">
+        <label for="elevation-one-field">Elevation-one: </label>
+        <input id="elevation-one-field" class="field" type="text" placeholder="1st elevation angle" required/>
+    </div>
+    <div id="azimuth-two">
+        <label for="azimuth-one-field">Azimuth: </label>
+        <input id="azimuth-one-field" class="field" type="text" placeholder="1st azimuth angle" required/>
+    </div>
+    <div id="elevation-two">
+        <label for="elevation-two-field">Elevation-two: </label>
+        <input id="elevation-two-field" class="field" type="text" placeholder="2nd elevation angle" required/>
+    </div>
+    <div id="azimuth-two">
+        <label for="azimuth-two-field">Azimuth: </label>
+        <input id="azimuth-two-field" class="field" type="text" placeholder="2nd azimuth angle" required/>
+    </div>
+    <div id="speed">
+        <label for="speed-field">Speed: </label>
+        <input id="speed-field" class="field" type="text" placeholder="speed" required/>
+    </div>
+    <div id="controls">
+        <input type="button" id="start" value="Start" required>
+        <input type="button" id="stop" value="Stop" required>
+    </div>
+</form>
+{% endblock %}
