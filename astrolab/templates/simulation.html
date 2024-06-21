@@ -3,30 +3,26 @@
 
 {% block content %}
 <p id="description">Simulate daylight on a model provided a place, time and date</p>
-<form id="input">
-    <!-- <div id="location">
-        <label for="location-field">Location: </label>
-        <input id="location-field" class="field" type="text" placeholder="location" required/>
-    </div> -->
-    <div id="longitude">
-        <label for="longitude-field">Longitude: </label>
-        <input id="longitude-field" class="field" type="text" placeholder="longitude" required/>
-    </div>
+<form id="input" action="/simulate" method="POST">
     <div id="latitude">
         <label for="latitude-field">Latitude: </label>
-        <input id="latitude-field" class="field" type="text" placeholder="latitude" required/>
+        <input id="latitude-field" name="geographical_latitude" class="field" type="text" placeholder="latitude" required/>
+    </div>
+    <div id="longitude">
+        <label for="longitude-field">Longitude: </label>
+        <input id="longitude-field" name="geographical_longitude" class="field" type="text" placeholder="longitude" required/>
     </div>
     <div id="date">
         <label for="date-field">Date: </label>
-        <input type="date" id="date-field" class="field" name="date" value="2024-06-12" min="0000-01-01" max="9999-12-31" />
+        <input id="date-field" name="day" class="field" type="date" value="2024-06-12" min="0000-01-01" max="9999-12-31" required/>
     </div>
     <div id="time">
-        <label for="time-fie">Time: </label>
-        <input type="time" id="time-field" class="field" name="time" min="00:00" max="23:59" required />
+        <label for="time-field">Time: </label>
+        <input id="time-field" name="local_clock_time" class="field" type="time" value="08:45" max="23:59" required/>
     </div>
     <div id="controls">
-        <input type="button" id="start" value="Start" required>
-        <input type="button" id="stop" value="Stop" required>
+        <input type="submit" id="start" value="Start">
+        <input type="submit" id="stop" value="Stop">
     </div>
 </form>
 {% endblock %}
