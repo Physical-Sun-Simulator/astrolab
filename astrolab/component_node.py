@@ -10,28 +10,36 @@ class ComponentNode(Node): # TODO: Improve action server implementation
 
     def __init__(self, name: str, angle: float, speed: float, qos_profile: int, topic_timer_period_sec: float,
                  angle_lower_bound: float, angle_upper_bound, speed_lower_bound: float, speed_upper_bound):
+        # General variables
         self.name = name
         self.angle = angle
         self.speed = speed
         self.qos_profile = qos_profile
         
+        # Initialize node
         super().__init__(f'{self.name}_node')
         
+        # Topics
         self.angle_topic_publisher = self.create_publisher(Float64, f'{self.name}_angle_topic', qos_profile)
         self.speed_topic_publisher = self.create_publisher(Float64, f'{name}_speed_topic', qos_profile)
+        
+        self.initialize_topic_values()
+        
+        # Servers
         self.speed_service = self.create_service(Speed, f'{name}_speed_service', self.speed_service_callback)
         self.angle_action_server = ActionServer(
             self,
             Angle,
             f'{name}_angle_action',
             self.angle_action_callback)
-        self.timer = self.create_timer(topic_timer_period_sec, self.topic_timer_callback)
+        
+        # Bounds
         self.angle_lower_bound = angle_lower_bound
         self.angle_upper_bound = angle_upper_bound
         self.speed_lower_bound = speed_lower_bound
         self.speed_upper_bound = speed_upper_bound
         
-    def topic_timer_callback(self):
+    def initialize_topic_values(self):
         """Publishes the angle and speed topics every period"""
         angle_msg = Float64()
         speed_msg = Float64()
@@ -66,8 +74,13 @@ class ComponentNode(Node): # TODO: Improve action server implementation
             feedback_msg.current_angle = self.angle
 
             while round(self.angle) != round(goal_handle.request.requested_angle, 0): # Change
+                # Publish feedback
                 feedback_msg.current_angle = self.angle
                 goal_handle.publish_feedback(feedback_msg)
+                
+                # Publish angle update
+                self.update_angle()
+                
                 self.get_logger().info(f'[Action] Current angle = {self.angle}')
                 self.angle += delta
                 time.sleep(1)
@@ -77,7 +90,16 @@ class ComponentNode(Node): # TODO: Improve action server implementation
             self.get_logger().info(f'[Service] Rejected angle adjustment request = {str(goal_handle.request.requested_angle)}')
             goal_handle.abort()
         
+        # Publish angle update
+        self.update_angle()
+        
+        # Publish result
         result = Angle.Result()
         result.final_angle = self.angle
         
         return result
+
+    def update_angle(self):
+        angle_msg = Float64()
+        angle_msg.data = self.angle
+        self.angle_topic_publisher.publish(angle_msg)
