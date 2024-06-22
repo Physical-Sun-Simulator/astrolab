@@ -10,35 +10,6 @@ node = user_interface_node()
 options = ['simulation', 'calibration', 'dynamics']
 name = "αstrolaβ"
 
-@app.route("/")
-def index():
-    return """<h2>Arm</h2>
-            <form action="/arm_angle" method="POST" class="combo-box">
-                <input type="text" name="number" placeholder="Insert an angle">
-                <input type="submit" value="submit" />
-            </form>
-            <form action="/arm_speed" method="POST" class="combo-box">
-                <input type="text" name="number" placeholder="Insert a speed">
-                <input type="submit" value="submit" />
-            </form>
-            <h2>Table</h2>
-            <form action="/table_angle" method="POST" class="combo-box">
-                <input type="text" name="number" placeholder="Insert an angle">
-                <input type="submit" value="submit" />
-            </form>
-            <form action="/table_speed" method="POST" class="combo-box">
-                <input type="text" name="number" placeholder="Insert a speed">
-                <input type="submit" value="submit" />
-            </form>
-            <h2>Simulate sun</h2>
-            <form action="/simulate" method="POST" class="combo-box">
-                <input type="text" name="geographical_latitude" placeholder="Insert geographical latitude">
-                <input type="text" name="geographical_longitude" placeholder="Insert geographical longitude">
-                <input type="text" name="local_clock_time" placeholder="Insert local clock time">
-                <input type="text" name="day" placeholder="Insert day">
-                <input type="submit" value="submit" />
-            </form>"""
-
 @app.route('/arm_angle', methods = ['POST'])
 def arm_angle():
     if request.method == 'POST':
@@ -102,6 +73,7 @@ def calculate():
                     <h3>Sun Elevation Angle (Arm) = {math.degrees(sun_elevation_angle)}</h3>
                     <h3>Sun Azimuth Angle (Table) = {math.degrees(sun_azimuth_angle)}</h3>"""
 
+@app.route("/")
 @app.route('/simulation', methods = ['GET'])
 def simulate():
     if request.method == 'GET':
