@@ -23,6 +23,9 @@ class ComponentNode(Node): # TODO: Improve action server implementation
         self.angle_topic_publisher = self.create_publisher(Float64, f'{self.name}_angle_topic', qos_profile)
         self.speed_topic_publisher = self.create_publisher(Float64, f'{name}_speed_topic', qos_profile)
         
+        # Give the simulation time to start
+        time.sleep(5)
+        
         self.initialize_topic_values()
         
         # Servers
