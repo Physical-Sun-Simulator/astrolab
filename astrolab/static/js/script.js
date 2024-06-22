@@ -5,7 +5,6 @@ const baseLongitude = 5.4903995655080475;
 const baseZoomLevel = 17;
 var openMenu = false;
 var map = L.map('map').setView([baseLatitude, baseLongitude], baseZoomLevel);
-L.marker([baseLatitude, baseLongitude]).addTo(map);
 setupMap();
 
 function setupMap() {

@@ -93,7 +93,8 @@ aside {
     width: 100vw;
 }
 #canvas > img {
-    width: 0px;
+    overflow: hidden;
+    height: 100%;
 }
 main {
     flex-grow: 1;
