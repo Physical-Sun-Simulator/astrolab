@@ -1,14 +1,54 @@
+# Libraries
 from flask import Flask, request, render_template, redirect, flash
 from astrolab.user_interface_node import user_interface_node
 from sun_position import get_sun_elevation_angle, get_sun_azimuth_angle, get_hour_angle, get_true_solar_time, get_equation_of_time, get_sun_declination
 import rclpy, math, threading, datetime, sys
 
+# Initialize Flask
 app = Flask(__name__)
 
+# Initialize rclpy
 rclpy.init(args=None)
+
+# Global variables
 node = user_interface_node()
-options = ['simulation', 'calibration', 'dynamics']
-name = "αstrolaβ"
+
+# Constants
+PRODUCT_NAME = "αstrolaβ"
+OPTIONS = ['simulation', 'calibration', 'dynamics']
+
+############
+# Webpages #
+############
+
+@app.route("/")
+@app.route('/simulation')
+def simulation():
+    return render_template('simulation.html',
+                           title="Simulation",
+                           name=PRODUCT_NAME,
+                           options=OPTIONS,
+                           canvas_component='map.html')
+    
+@app.route('/calibration')
+def calibration():
+    return render_template('calibration.html',
+                           title='Calibration',
+                           name=PRODUCT_NAME,
+                           options=OPTIONS,
+                           canvas_component='explanation.html')
+    
+@app.route('/dynamics')
+def dynamics():
+    return render_template('dynamics.html',
+                           title="Dynamics",
+                           name=PRODUCT_NAME,
+                           options=OPTIONS,
+                           canvas_component='explanation.html')
+
+###########
+# Actions #
+###########
 
 @app.route('/arm_angle', methods = ['POST'])
 def arm_angle():
@@ -44,10 +84,8 @@ def calibrate():
         if request.form['start'] == 'Start':
             elevation = request.form['elevation']
             azimuth = request.form['azimuth']
-            # speed = request.form['speed']
             node.arm_send_goal(math.radians(float(elevation)))
             node.table_send_goal(math.radians(float(azimuth)))
-            # node.change_table_speed(float(speed))
             print("Starting machine", file=sys.stderr)
         else:
             print("Stopping machine", file=sys.stderr)
@@ -72,32 +110,19 @@ def calculate():
                     <h2>Calculated Angles:</h2>
                     <h3>Sun Elevation Angle (Arm) = {math.degrees(sun_elevation_angle)}</h3>
                     <h3>Sun Azimuth Angle (Table) = {math.degrees(sun_azimuth_angle)}</h3>"""
-
-@app.route("/")
-@app.route('/simulation', methods = ['GET'])
-def simulate():
-    if request.method == 'GET':
-        return render_template('simulation.html', title=options[0], name=name, options=options)
-    
-@app.route('/calibration', methods = ['GET'])
-def calibration():
-    if request.method == 'GET':
-        return render_template('calibration.html', title=options[1], name=name, options=options)
-    
-@app.route('/dynamics', methods = ['GET'])
-def dynamics():
-    if request.method == 'GET':
-        return render_template('dynamics.html', title=options[2], name=name, options=options)
     
 def main():
-    t1 = threading.Thread(target=app.run(debug=True), name='t1')
-    t2 = threading.Thread(target=rclpy.spin(node), name='t2')
+    # Initialize threads
+    webThread = threading.Thread(target=app.run(debug=True), name='webThread')
+    nodeThread = threading.Thread(target=rclpy.spin(node), name='nodeThread')
 
-    t1.start()
-    t2.start()
+    # Start threads
+    webThread.start()
+    nodeThread.start()
 
-    t1.join()
-    t2.join()
+    # Join threads
+    webThread.join()
+    nodeThread.join()
 
 if __name__ == '__main__':
     main()

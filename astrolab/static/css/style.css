@@ -21,20 +21,19 @@ header {
     width: inherit;
     display: flex;
 }
+
 .header-item {
     display: inline-block;
 }
-/* #menu-button, #menu-button img{
-    height: inherit;
-} */
 
 #menu-button {
     height: inherit;
     width: inherit;
     display: inline-block;
-    /* margin: 10px 10px 10px 10px; */
 }
-#adjustment-title, #position-title{
+
+#adjustment-title,
+#position-title {
     padding-bottom: 4px;
     border-bottom: 1px solid #3a3a3a;
     text-indent: 10px;
@@ -45,10 +44,6 @@ header {
     display: flex;
     flex-direction: column;
 }
-
-/* #positions-configuration {
-    background-color: rgb(25, 25, 25);
-} */
 
 #positions {
     background-color: rgb(25, 25, 25);
@@ -63,15 +58,19 @@ header {
     height: calc(100% - 20px);
     width: calc(100% - 20px);
 }
+
 nav {
     height: 48px;
     width: 48px;
     border-right: 1px solid #424242;
     z-index: 3;
 }
-nav:hover, nav:active {
+
+nav:hover,
+nav:active {
     background-color: grey;
 }
+
 #logo {
     width: 100%;
     text-align: center;
@@ -84,7 +83,6 @@ nav:hover, nav:active {
     background-color: rgb(35, 35, 35);
     padding: 10px;
     box-shadow: 0px 1px 0px #35353596;
-    /* height: 500px; */
     width: calc(100% - 20px);
 }
 
@@ -92,32 +90,34 @@ aside {
     background-color: rgb(25, 25, 25);
     width: 100vw;
 }
-#canvas > img {
+
+#canvas>img {
     overflow: hidden;
     height: 100%;
 }
+
 main {
     flex-grow: 1;
     transition: 0.5s;
     display: flex;
     height: inherit;
-    width: inherit; 
-    /* this inheritance wrecked the map */
+    width: inherit;
 }
 
-h1, a {
+h1,
+a {
     color: white;
 }
 
 #menu {
     width: 0px;
     transition: 0.5s;
-    background-color: rgb(27,27,27);
+    background-color: rgb(27, 27, 27);
     display: flex;
     box-shadow: 2px 0px 0px #10101096;
     flex-direction: column;
     border-top: 1px solid #3a3a3a;
-    z-index: 3; /* Stay on top */
+    z-index: 3;
     overflow-x: hidden;
     position: absolute;
     left: 0;
@@ -128,7 +128,6 @@ h1, a {
     height: 100px;
     text-align: center;
     line-height: 2;
-    /* background-color: rgb(15,15,15); */
     box-shadow: 1px 0px 0px #05050596;
     text-decoration: none;
     border-bottom: 1px solid #3a3a3a;
@@ -142,14 +141,15 @@ p {
     font-style: italic;
 }
 
-#menu a:hover, #menu a:active  {
+#menu a:hover,
+#menu a:active {
     background-color: white;
     color: black;
 }
 
 form {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
 
 .info-label {
@@ -164,24 +164,50 @@ label {
     line-height: 1.5;
 }
 
-label, .info-label {
+label,
+.info-label {
     color: white;
     font-size: 14pt;
 }
 
-#input, #positions-configuration {
+#input,
+#positions-configuration {
     display: flex;
     flex-direction: column;
     padding: 25px;
 }
 
-#location, #date, #time, #status, #longitude, #latitude, #elevation, #azimuth, #elevation-one, #azimuth-one, #elevation-two, #azimuth-two, #speed {
+#location,
+#date,
+#time,
+#status,
+#longitude,
+#latitude,
+#elevation,
+#azimuth,
+#elevation-one,
+#azimuth-one,
+#elevation-two,
+#azimuth-two,
+#speed {
     height: 35px;
     display: flex;
     padding-bottom: 10px;
 }
 
-#location > *, #date > *, #time > *, .position > *, #elevation > *, #azimuth > *, #latitude > *, #longitude > *, #speed > *, #elevation-one > *, #azimuth-one > *, #elevation-two > *, #azimuth-two > * {
+#location>*,
+#date>*,
+#time>*,
+.position>*,
+#elevation>*,
+#azimuth>*,
+#latitude>*,
+#longitude>*,
+#speed>*,
+#elevation-one>*,
+#azimuth-one>*,
+#elevation-two>*,
+#azimuth-two>* {
     flex-grow: 1;
 }
 
@@ -196,8 +222,8 @@ label, .info-label {
     vertical-align: text-bottom
 }
 
-#about > h3 {
-    margin:0px;
+#about>h3 {
+    margin: 0px;
     line-height: 0.5;
     height: inherit;
     top: 97%;
@@ -206,7 +232,8 @@ label, .info-label {
     position: relative;
 }
 
-#description, #position-description {
+#description,
+#position-description {
     padding-left: 25px;
     padding-right: 25px;
 }
@@ -246,13 +273,14 @@ label, .info-label {
     box-shadow: 0px 2px 1px rgb(206, 206, 206);
 }
 
-#location-button:hover, #location-button:active  {
+#location-button:hover,
+#location-button:active {
     background-color: white;
     color: rgb(85, 85, 85);
     border: 4px solid rgb(206, 206, 206);
 }
 
-#controls > * {
+#controls>* {
     height: 50px;
     background-color: #00000000;
     border: 2px solid white;
@@ -264,7 +292,8 @@ label, .info-label {
     box-shadow: 2px 2px 1px #fff;
 }
 
-#controls > *:hover, #controls > *:active {
+#controls>*:hover,
+#controls>*:active {
     background-color: white;
     color: black;
     box-shadow: 2px 2px 1px #fff;
@@ -296,22 +325,15 @@ h2 {
     text-indent: 10px;
 }
 
-/* p {
-    font-size: 8pt;
-    text-align: center;
-} */
- 
-
 /* Large devices */
 @media only screen and (min-width: 600px) {
     aside {
-        /* flex-grow: 0; */
-
         min-width: 600px;
         width: 600px;
         box-shadow: 2px 0px 0px #10101096;
         z-index: 2;
     }
+
     #canvas {
         background-color: rgb(20, 20, 20);
         flex-grow: 1;
@@ -322,6 +344,7 @@ h2 {
         flex-direction: column;
         position: relative;
     }
+
     #map {
         overflow: hidden;
         height: 100%;
