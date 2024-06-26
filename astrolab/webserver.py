@@ -128,23 +128,6 @@ def stop():
 # Inaccesible #
 ###############
 
-# def elevation_callback(elevation):
-#     """ Update configuration information. """
-#     # Get configuration
-#     with open(CONFIGURATION_PATH, "r") as file:
-#         configuration = json.load(file)
-             
-#     # Serialize configuration
-#     configuration['elevation'] = elevation
-    
-#     # Write to file
-#     with open(CONFIGURATION_PATH, "w") as file:
-#         json.dump(configuration, file) 
-#     # pass
-
-# def azimuth_callback():
-#     pass
-
 def update_configuration():
     """ Update configuration information. """
     configuration = {
@@ -163,7 +146,6 @@ def main():
     nodeThread = threading.Thread(target=rclpy.spin, name='node_thread', args=(node,))
     webThread = threading.Thread(target=app.run, name='web_thread', kwargs={"debug":False, 'use_reloader':False})
     node.create_timer(CONFIGURATION_INTERVAL, update_configuration)
-    # app.run(debug=True)
     
     # Start threads
     webThread.start()

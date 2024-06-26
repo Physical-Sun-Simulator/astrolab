@@ -4,14 +4,14 @@ from rclpy.action import ActionClient
 from std_msgs.msg import Float64
 from simulation_interfaces.srv import Initialization, Speed  # type: ignore
 from simulation_interfaces.action import Angle  # type: ignore
-# from sun_position import (
-#     get_sun_elevation_angle,
-#     get_sun_azimuth_angle,
-#     get_hour_angle,
-#     get_true_solar_time,
-#     get_equation_of_time,
-#     get_sun_declination,
-# )
+from sun_position import (
+    get_sun_elevation_angle,
+    get_sun_azimuth_angle,
+    get_hour_angle,
+    get_true_solar_time,
+    get_equation_of_time,
+    get_sun_declination,
+)
 
 # Constants
 NODE_NAME = "user_interface_node"
@@ -169,18 +169,17 @@ class user_interface_node(Node):
 
     def simulate(self, latitude, longitude, day, time):
         # Calculate sun position
-        # equation_of_time = get_equation_of_time(day)
-        # true_solar_time = get_true_solar_time(time, longitude, equation_of_time)
-        # hour_angle = get_hour_angle(true_solar_time)
-        # sun_declination = get_sun_declination(day)
-        # elevation = math.degrees(get_sun_elevation_angle(latitude, sun_declination, hour_angle))
-        # azimuth = math.degrees(get_sun_azimuth_angle(
-        #     elevation, latitude, sun_declination, true_solar_time
-        # ))
+        equation_of_time = get_equation_of_time(day)
+        true_solar_time = get_true_solar_time(time, math.radians(longitude), equation_of_time)
+        hour_angle = get_hour_angle(true_solar_time)
+        sun_declination = get_sun_declination(day)
+        elevation = get_sun_elevation_angle(math.radians(latitude), sun_declination, hour_angle)
+        azimuth = get_sun_azimuth_angle(
+            elevation, math.radians(latitude), sun_declination, true_solar_time
+        )
 
-        # # Make request
-        # self.calibrate(elevation, azimuth)
-        pass
+        # Make request
+        self.calibrate(math.degrees(elevation), math.degrees(azimuth))
 
     def abort(self):
         pass
