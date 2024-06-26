@@ -34,8 +34,8 @@ class ComponentNode(Node):  # TODO: Improve action server implementation
         self.angle = angle
         self.speed = speed
         self.qos_profile = qos_profile
-        self._goal_handle = None
-        self._goal_lock = threading.Lock()
+        self.goal_handle = None
+        self.goal_lock = threading.Lock()
 
         # Initialize node
         super().__init__(NODE_NAME.format(name=self.name))
@@ -89,13 +89,13 @@ class ComponentNode(Node):  # TODO: Improve action server implementation
             return GoalResponse.ACCEPT
 
     def angle_handle_accepted_callback(self, goal_handle):
-        with self._goal_lock:
+        with self.goal_lock:
             # This server only allows one goal at a time
-            if self._goal_handle is not None and self._goal_handle.is_active:
+            if self.goal_handle is not None and self.goal_handle.is_active:
                 self.get_logger().info('Aborting previous goal')
                 # Abort the existing goal
-                self._goal_handle.abort()
-            self._goal_handle = goal_handle
+                self.goal_handle.abort()
+            self.goal_handle = goal_handle
 
         goal_handle.execute()
 
@@ -124,6 +124,13 @@ class ComponentNode(Node):  # TODO: Improve action server implementation
             while round(self.angle) != round(
                 goal_handle.request.requested_angle, 0
             ):  # Change
+                
+                # Check if cancel
+                if goal_handle.is_cancel_requested:
+                    goal_handle.canceled()
+                    self.get_logger().info(f"[Action] Angle adjustment goal cancelled = {str(goal_handle.request.requested_angle)}")
+                    return Angle.Result()
+                
                 # Publish feedback
                 feedback_msg.current_angle = self.angle
                 goal_handle.publish_feedback(feedback_msg)
@@ -137,7 +144,7 @@ class ComponentNode(Node):  # TODO: Improve action server implementation
             goal_handle.succeed()
         else:
             self.get_logger().info(
-                f"[Service] Rejected angle adjustment request = {str(goal_handle.request.requested_angle)}"
+                f"[Action] Rejected angle adjustment request = {str(goal_handle.request.requested_angle)}"
             )
             goal_handle.abort()
 
@@ -185,12 +192,12 @@ class ComponentNode(Node):  # TODO: Improve action server implementation
         """Provides responses for initialize services"""
         self.get_logger().info(f"[Service] Received initialize request")
 
-        with self._goal_lock:
+        with self.goal_lock:
         # This server only allows one goal at a time
-            if self._goal_handle is not None and self._goal_handle.is_active:
+            if self.goal_handle is not None and self.goal_handle.is_active:
                 self.get_logger().info('[Service] Aborting previous goal')
                 # Abort the existing goal
-                self._goal_handle.abort()
+                self.goal_handle.abort()
             self.get_logger().info("[Service] Accepted intialize request")
             self.angle = 0.0
             response.response = True
