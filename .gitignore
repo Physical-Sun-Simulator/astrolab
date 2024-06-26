@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 .vscode/
-astrolab/data/configuration.json
+/src/astrolab/astrolab/data/configuration.json
