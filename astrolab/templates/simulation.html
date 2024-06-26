@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
-
-
 {% block content %}
-<p id="description">Simulate daylight on a model provided a place, time and date</p>
-<form id="input" action="/simulate" method="POST">
+<p id="description">Simulate daylight on a model provided a place, (local) time and date</p>
+<form id="stop-form" action="/stop" method="POST">
+    <!-- Used for the stop submission -->
+</form>
+<form id="input-form" action="/simulate" method="POST">
     <div id="latitude">
         <label for="latitude-field">Latitude: </label>
-        <input id="latitude-field" name="geographical_latitude" class="field" type="text" placeholder="latitude" required/>
+        <input id="latitude-field" name="latitude" class="field" type="number" value="51.446233750000005" placeholder="latitude" min="-90.0" max="90.0" step="0.000000000000001" required/>
     </div>
     <div id="longitude">
         <label for="longitude-field">Longitude: </label>
-        <input id="longitude-field" name="geographical_longitude" class="field" type="text" placeholder="longitude" required/>
+        <input id="longitude-field" name="longitude" class="field" type="number" value="5.4849738979486276" placeholder="longitude" min="-180.0" max="180.0" step="0.000000000000001" required/>
     </div>
     <div id="date">
         <label for="date-field">Date: </label>
@@ -18,11 +19,11 @@
     </div>
     <div id="time">
         <label for="time-field">Time: </label>
-        <input id="time-field" name="local_clock_time" class="field" type="time" value="08:45" max="23:59" required/>
+        <input id="time-field" name="time" class="field" type="time" value="08:45" max="23:59" required/>
     </div>
     <div id="controls">
-        <input type="submit" id="start" value="Start">
-        <input type="submit" id="stop" value="Stop">
+        <input type="submit" name="button" id="start" value="Start" form="input-form">
+        <input type="submit" name="button" id="stop" value="Stop" form="stop-form">
     </div>
 </form>
 {% endblock %}

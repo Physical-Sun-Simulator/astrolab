@@ -1,5 +1,9 @@
 <div id="location-searchbar">
     <input id="location-field" type="text" placeholder="Search coordinates by location" required/>
+    <!-- Add onclick in js -->
     <input id="location-button" type="button" value="Get Coordinates" onclick="getCoordinates()">
 </div>
-<div id="map"></div>
+<div id="map">
+    <!-- Will be filled using javascript -->
+</div>
+<script defer type="text/javascript" src="{{url_for('static', filename='js/map.js')}}"></script>

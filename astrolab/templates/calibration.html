@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
-
-
 {% block content %}
 <p id="description">Move the machine to a specific provided elevation and azimuth angle (for precise calibration purposes)</p>
-<form id="input" action="/calibrate" method="POST">
+<form id="stop-form" action="/stop" method="POST">
+    <!-- Used for the stop submission -->
+</form>
+<form id="input-form" action="/calibrate" method="POST">
     <div id="elevation">
         <label for="elevation-field">Elevation: </label>
-        <input id="elevation-field" name="elevation" class="field" type="text" placeholder="elevation angle" required/>
+        <input id="elevation-field" name="elevation" class="field" type="number" placeholder="elevation angle" value="0.0" min="0.0" max="90.0" step="0.000000000000001" required/>
     </div>
     <div id="azimuth">
         <label for="azimuth-field">Azimuth: </label>
-        <input id="azimuth-field" name="azimuth" class="field" type="text" placeholder="azimuth angle" required/>
+        <input id="azimuth-field" name="azimuth" class="field" type="number" placeholder="azimuth angle" value="0.0" min="0.0" max="360.0" step="0.000000000000001" required/>
     </div>
     <div id="controls">
-        <input type="submit" name="start" id="start" value="Start">
-        <input type="submit" name="stop" id="stop" value="Stop">
+        <input type="submit" name="button" id="start" value="Start" form="input-form">
+        <input type="submit" name="button" id="stop" value="Stop" form="stop-form">
     </div>
 </form>
 {% endblock %}
