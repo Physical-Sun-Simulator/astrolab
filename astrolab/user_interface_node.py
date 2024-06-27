@@ -74,7 +74,7 @@ class user_interface_node(Node):
         self.arm_initialize_client = self.create_client(
             Initialization, ARM_INITIALIZE_SERVICE
         )
-        self.table_initialization_client = self.create_client(
+        self.table_initialize_client = self.create_client(
             Initialization, TABLE_INITIALIZE_SERVICE
         )
 
@@ -119,6 +119,8 @@ class user_interface_node(Node):
     # Service goal senders #
     ########################
 
+    # -> Arm
+
     def change_arm_speed(self, speed):
         while not self.arm_speed_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("[Service] Waiting for arm_speed_service...")
@@ -128,6 +130,15 @@ class user_interface_node(Node):
         future = self.arm_speed_client.call_async(request)
         rclpy.spin_until_future_complete(self, future)
         self.get_logger().info(f"[Service] Changed arm speed to {speed}")
+        
+    def initialize_arm(self):
+        self.arm_initialize_client.wait_for_service()
+    
+        request = Initialization.Request()
+        request.request = "test"
+        result = self.arm_initialize_client.call(request)
+
+    # -> Table
 
     def change_table_speed(self, speed):
         while not self.table_speed_client.wait_for_service(timeout_sec=1.0):
@@ -138,6 +149,13 @@ class user_interface_node(Node):
         future = self.table_speed_client.call_async(request)
         rclpy.spin_until_future_complete(self, future)
         self.get_logger().info(f"[Service] Changed table speed to {speed}")
+        
+    def initialize_table(self):
+        self.table_initialize_client.wait_for_service()
+    
+        request = Initialization.Request()
+        request.request = "test"
+        result = self.table_initialize_client.call(request)
 
     ###########
     # Actions #
@@ -233,7 +251,8 @@ class user_interface_node(Node):
     # High-level options #
     ######################
 
-    def move(self, elevation_one, azimuth_one, elevation_two, azimuth_two):
+    def move(self, elevation_one, azimuth_one, elevation_two, azimuth_two, speed):
+        self.initialize()
         self.arm_angle_send_goal(elevation_one)
         self.table_angle_send_goal(azimuth_one)
         threading.Thread(
@@ -249,13 +268,24 @@ class user_interface_node(Node):
     def next_move(self, elevation_one, azimuth_one, elevation_two, azimuth_two):
         while self.elevation != elevation_one or self.azimuth != azimuth_one:
             time.sleep(5)
-    
+
         self.arm_angle_send_goal(elevation_two)
         self.table_angle_send_goal(azimuth_two)
 
     def calibrate(self, elevation, azimuth):
+        self.initialize()
         self.arm_angle_send_goal(elevation)
         self.table_angle_send_goal(azimuth)
+
+    def initialize(self):
+        init_arm = threading.Thread(target=self.initialize_arm)
+        init_table = threading.Thread(target=self.initialize_table)
+        
+        init_arm.start()
+        init_table.start()
+        
+        init_arm.join()
+        init_table.join()
 
     def simulate(self, latitude, longitude, day, time):
         # Calculate sun position
@@ -272,6 +302,7 @@ class user_interface_node(Node):
             elevation, math.radians(latitude), sun_declination, true_solar_time
         )
 
+        self.initialize()
         # Make request
         self.arm_angle_send_goal(math.degrees(elevation))
         self.table_angle_send_goal(math.degrees(azimuth))

@@ -87,7 +87,7 @@ def simulate():
             longitude = float(request.form['longitude'])  
             day = get_day_number('day')
             time = get_time('time')
-            node.simulate(latitude, longitude, day, time)
+            threading.Thread(target=node.simulate, args=(latitude, longitude, day, time)).start()
             # TODO: Add calculated elevation and azimuth angle to simulation msg
             flash(SIMULATE_MSG)
     return redirect("/simulation")
@@ -99,7 +99,7 @@ def calibrate():
         if start_pressed():
             elevation = float(request.form['elevation'])
             azimuth = float(request.form['azimuth'])
-            node.calibrate(elevation, azimuth)
+            threading.Thread(target=node.calibrate, args=(elevation, azimuth)).start()
             flash(CALIBRATE_MSG)
     return redirect("/calibration")
     
@@ -112,9 +112,9 @@ def move():
             azimuth_one = float(request.form['azimuth-one'])
             elevation_two = float(request.form['elevation-two'])
             azimuth_two = float(request.form['azimuth-two'])
-            # speed = get_speed('speed')
+            speed = get_speed('speed')
             # node.move(elevation_one, azimuth_one, elevation_two, azimuth_two, speed)
-            node.move(elevation_one, azimuth_one, elevation_two, azimuth_two)
+            threading.Thread(target=node.move, args=(elevation_one, azimuth_one, elevation_two, azimuth_two, speed)).start()
             flash(MOVE_MSG)
     return redirect("/dynamics")
 
@@ -152,7 +152,6 @@ def main():
     webThread.start()
     nodeThread.start()
     
-
     # Join threads
     webThread.join()
     nodeThread.join()
