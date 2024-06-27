@@ -1,32 +1,33 @@
 {% extends 'base.html' %}
-
-
 {% block content %}
 <p id="description">Move the machine between two specific configurations for dynamic lighting</p>
-<form id="input">
+<form id="stop-form" action="/stop" method="POST">
+    <!-- Used for the stop submission -->
+</form>
+<form id="input-form" action="/move" method="POST">
     <div id="elevation-one">
         <label for="elevation-one-field">Elevation-one: </label>
-        <input id="elevation-one-field" class="field" type="text" placeholder="1st elevation angle" required/>
+        <input id="elevation-one-field" name="elevation-one" class="field" type="number" placeholder="1st elevation angle" value="0.0" min="0.0" max="90.0" step="0.000000000000001" required/>
     </div>
     <div id="azimuth-two">
         <label for="azimuth-one-field">Azimuth: </label>
-        <input id="azimuth-one-field" class="field" type="text" placeholder="1st azimuth angle" required/>
+        <input id="azimuth-one-field" name="azimuth-one" class="field" type="number" placeholder="1st azimuth angle" value="0.0" min="0.0" max="360.0" step="0.000000000000001" required/>
     </div>
     <div id="elevation-two">
         <label for="elevation-two-field">Elevation-two: </label>
-        <input id="elevation-two-field" class="field" type="text" placeholder="2nd elevation angle" required/>
+        <input id="elevation-two-field" name="elevation-two" class="field" type="number" placeholder="2nd elevation angle" value="0.0" min="0.0" max="90.0" step="0.000000000000001" required/>
     </div>
     <div id="azimuth-two">
-        <label for="azimuth-two-field">Azimuth: </label>
-        <input id="azimuth-two-field" class="field" type="text" placeholder="2nd azimuth angle" required/>
+        <label for="azimuth-two-field">Azimuth-two: </label>
+        <input id="azimuth-two-field" name="azimuth-two" class="field" type="number" placeholder="2nd azimuth angle" value="0.0" min="0.0" max="360.0" step="0.000000000000001" required/>
     </div>
     <div id="speed">
         <label for="speed-field">Speed: </label>
-        <input id="speed-field" class="field" type="text" placeholder="speed" required/>
+        <input id="speed-field" name="speed" class="field" type="number" placeholder="speed" value="50" min="0.0" max="100.0" step="0.000000000000001" required/>
     </div>
     <div id="controls">
-        <input type="button" id="start" value="Start" required>
-        <input type="button" id="stop" value="Stop" required>
+        <input type="submit" name="button" id="start" value="Start" form="input-form">
+        <input type="submit" name="button" id="stop" value="Stop" form="stop-form">
     </div>
 </form>
 {% endblock %}

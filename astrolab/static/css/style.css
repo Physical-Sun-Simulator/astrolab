@@ -1,4 +1,4 @@
-/* Mobile first */
+/* TODO: Fix mobile first */
 body {
     margin: 0;
     min-height: 100vh;
@@ -10,6 +10,7 @@ body {
     height: 100%;
     max-width: 100vw;
     max-height: 100vh;
+    background-color: rgb(27, 27, 27);
 }
 
 header {
@@ -20,36 +21,31 @@ header {
     width: inherit;
     display: flex;
 }
+
 .header-item {
     display: inline-block;
 }
-/* #menu-button, #menu-button img{
-    height: inherit;
-} */
 
 #menu-button {
     height: inherit;
     width: inherit;
     display: inline-block;
-    /* margin: 10px 10px 10px 10px; */
 }
-#adjustment-title, #position-title{
+
+#adjustment-title,
+#configuration-title {
     padding-bottom: 4px;
     border-bottom: 1px solid #3a3a3a;
     text-indent: 10px;
     font-size: xx-large;
 }
 
-#configuration {
+#side-bar {
     display: flex;
     flex-direction: column;
 }
 
-/* #positions-configuration {
-    background-color: rgb(25, 25, 25);
-} */
-
-#positions {
+#configuration {
     background-color: rgb(25, 25, 25);
     padding: 10px;
     box-shadow: 0px 1px 0px #25252596;
@@ -62,15 +58,19 @@ header {
     height: calc(100% - 20px);
     width: calc(100% - 20px);
 }
+
 nav {
     height: 48px;
     width: 48px;
     border-right: 1px solid #424242;
     z-index: 3;
 }
-nav:hover, nav:active {
+
+nav:hover,
+nav:active {
     background-color: grey;
 }
+
 #logo {
     width: 100%;
     text-align: center;
@@ -83,7 +83,6 @@ nav:hover, nav:active {
     background-color: rgb(35, 35, 35);
     padding: 10px;
     box-shadow: 0px 1px 0px #35353596;
-    /* height: 500px; */
     width: calc(100% - 20px);
 }
 
@@ -91,37 +90,36 @@ aside {
     background-color: rgb(25, 25, 25);
     width: 100vw;
 }
-#canvas > img {
-    width: 0px;
+
+#canvas>img {
+    overflow: hidden;
+    height: 100%;
 }
+
 main {
     flex-grow: 1;
     transition: 0.5s;
     display: flex;
     height: inherit;
-    width: inherit; 
-    /* this inheritance wrecked the map */
+    width: inherit;
 }
-/* #map {
-    flex-grow: 1;
-} */
-h1, a {
+
+h1,
+a {
     color: white;
 }
 
 #menu {
     width: 0px;
     transition: 0.5s;
-    background-color: rgb(27,27,27);
+    background-color: rgb(27, 27, 27);
     display: flex;
-    box-shadow: 2px 0px 0px #10101096;
     flex-direction: column;
     border-top: 1px solid #3a3a3a;
-    z-index: 3; /* Stay on top */
+    z-index: 3;
     overflow-x: hidden;
     position: absolute;
     left: 0;
-    height: calc(100% - 50px);
     border-right: 0px solid #3a3a3a;
 }
 
@@ -129,7 +127,6 @@ h1, a {
     height: 100px;
     text-align: center;
     line-height: 2;
-    /* background-color: rgb(15,15,15); */
     box-shadow: 1px 0px 0px #05050596;
     text-decoration: none;
     border-bottom: 1px solid #3a3a3a;
@@ -143,14 +140,15 @@ p {
     font-style: italic;
 }
 
-#menu a:hover, #menu a:active  {
+#menu a:hover,
+#menu a:active {
     background-color: white;
     color: black;
 }
 
-form {
+#input-form {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
 
 .info-label {
@@ -165,29 +163,59 @@ label {
     line-height: 1.5;
 }
 
-label, .info-label {
+label,
+.info-label {
     color: white;
     font-size: 14pt;
 }
 
-#input, #positions-configuration {
+#input-form,
+#configuration-positions {
     display: flex;
     flex-direction: column;
     padding: 25px;
 }
 
-#location, #date, #time, #status, #longitude, #latitude, #elevation, #azimuth, #elevation-one, #azimuth-one, #elevation-two, #azimuth-two, #speed {
+#location,
+#date,
+#time,
+#status,
+#longitude,
+#latitude,
+#elevation-position,
+#azimuth-position,
+#elevation,
+#azimuth,
+#elevation-one,
+#azimuth-one,
+#elevation-two,
+#azimuth-two,
+#speed {
     height: 35px;
     display: flex;
     padding-bottom: 10px;
 }
 
-#location > *, #date > *, #time > *, .position > *, #elevation > *, #azimuth > *, #latitude > *, #longitude > *, #speed > *, #elevation-one > *, #azimuth-one > *, #elevation-two > *, #azimuth-two > * {
+#location>*,
+#date>*,
+#time>*,
+.position>*,
+#elevation>*,
+#azimuth>*,
+#elevation-position>*,
+#azimuth-position>*,
+#latitude>*,
+#longitude>*,
+#speed>*,
+#elevation-one>*,
+#azimuth-one>*,
+#elevation-two>*,
+#azimuth-two>* {
     flex-grow: 1;
 }
 
 #about {
-    padding: 35px;
+    padding: 20px;
     margin: 0px;
     background-color: rgb(15, 15, 15);
     color: white;
@@ -197,8 +225,8 @@ label, .info-label {
     vertical-align: text-bottom
 }
 
-#about > h3 {
-    margin:0px;
+#about>h3 {
+    margin: 0px;
     line-height: 0.5;
     height: inherit;
     top: 97%;
@@ -207,7 +235,8 @@ label, .info-label {
     position: relative;
 }
 
-#description, #position-description {
+#description,
+#configuration-description {
     padding-left: 25px;
     padding-right: 25px;
 }
@@ -219,16 +248,17 @@ label, .info-label {
 
 #location-searchbar {
     position: absolute;
-    top: 80px;
+    bottom: 100px;
     height: 78px;
     left: calc(50% - 385px);
+    z-index: 3;
 }
 
 #location-field {
     text-indent: 25px;
     font-size: large;
     height: 70px;
-    width: 700px;
+    width: 500px;
     border: 4px solid rgb(206, 206, 206);
     border-radius: 40px;
     box-shadow: 0px 2px 1px rgb(206, 206, 206);
@@ -236,7 +266,7 @@ label, .info-label {
 
 #location-button {
     height: 78px;
-    width: 100px;
+    width: 200px;
     background-color: #181818;
     border: 4px solid rgb(255, 255, 255);
     color: rgb(255, 255, 255);
@@ -246,13 +276,14 @@ label, .info-label {
     box-shadow: 0px 2px 1px rgb(206, 206, 206);
 }
 
-#location-button:hover, #location-button:active  {
+#location-button:hover,
+#location-button:active {
     background-color: white;
     color: rgb(85, 85, 85);
     border: 4px solid rgb(206, 206, 206);
 }
 
-#controls > * {
+#controls>* {
     height: 50px;
     background-color: #00000000;
     border: 2px solid white;
@@ -264,7 +295,8 @@ label, .info-label {
     box-shadow: 2px 2px 1px #fff;
 }
 
-#controls > *:hover, #controls > *:active {
+#controls>*:hover,
+#controls>*:active {
     background-color: white;
     color: black;
     box-shadow: 2px 2px 1px #fff;
@@ -296,22 +328,15 @@ h2 {
     text-indent: 10px;
 }
 
-/* p {
-    font-size: 8pt;
-    text-align: center;
-} */
- 
-
 /* Large devices */
 @media only screen and (min-width: 600px) {
     aside {
-        /* flex-grow: 0; */
-
         min-width: 600px;
         width: 600px;
         box-shadow: 2px 0px 0px #10101096;
         z-index: 2;
     }
+
     #canvas {
         background-color: rgb(20, 20, 20);
         flex-grow: 1;
@@ -322,8 +347,10 @@ h2 {
         flex-direction: column;
         position: relative;
     }
-    #canvas > iframe {
+
+    #map {
         overflow: hidden;
         height: 100%;
+        z-index: 2;
     }
 }

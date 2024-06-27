@@ -38,6 +38,11 @@ def generate_launch_description():
             executable='table',
             name='table',
             output='screen'),
+        # Node(
+        #     package='astrolab',
+        #     executable='user_interface',
+        #     name='user_interface',
+        #     output='screen'),
         ExecuteProcess(
             cmd=['python3', 'src/astrolab/astrolab/webserver.py'],
             name='webserver',
