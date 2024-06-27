@@ -31,7 +31,7 @@ TOPIC_MSG_TYPE = Float64
 TOPIC_QOS_PROFILE = 10
 INITIAL_ELEVATION = 0.0
 INITIAL_AZIMUTH = 0.0
-INITIAL_SPEED = 0.2
+INITIAL_SPEED = 0.5
 BASE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 CONFIGURATION_PATH = os.path.join(BASE_DIRECTORY, "data/configuration.json")
 
@@ -122,13 +122,11 @@ class user_interface_node(Node):
     # -> Arm
 
     def change_arm_speed(self, speed):
-        while not self.arm_speed_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("[Service] Waiting for arm_speed_service...")
+        self.arm_speed_client.wait_for_service()
 
         request = Speed.Request()
         request.speed = speed
-        future = self.arm_speed_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
+        result = self.arm_speed_client.call(request)
         self.get_logger().info(f"[Service] Changed arm speed to {speed}")
         
     def initialize_arm(self):
@@ -141,13 +139,11 @@ class user_interface_node(Node):
     # -> Table
 
     def change_table_speed(self, speed):
-        while not self.table_speed_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("[Service] Waiting for table_speed_service...")
-
+        self.table_speed_client.wait_for_service()
+        
         request = Speed.Request()
         request.speed = speed
-        future = self.table_speed_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
+        result = self.table_speed_client.call_async(request)
         self.get_logger().info(f"[Service] Changed table speed to {speed}")
         
     def initialize_table(self):
@@ -236,6 +232,15 @@ class user_interface_node(Node):
         self.send_table_angle_goal_future.add_done_callback(
             self.table_angle_goal_response_callback
         )
+        
+    def table_angle_send_blocking_goal(self, angle):
+        goal_msg = Angle.Goal()
+        goal_msg.requested_angle = angle
+
+        self.azimuth_action_client.wait_for_server()
+        self.get_logger().info(f"[Action] Sending table angle goal request = {angle}")
+
+        self.send_table_angle_goal_future = self.azimuth_action_client.send_goal(goal_msg)
 
     ###########
     # Getters #
@@ -261,16 +266,20 @@ class user_interface_node(Node):
                 "elevation_one": elevation_one,
                 "elevation_two": elevation_two,
                 "azimuth_one": azimuth_one,
-                "azimuth_two": azimuth_two
+                "azimuth_two": azimuth_two,
+                "speed": speed
             },
         ).start()
 
-    def next_move(self, elevation_one, azimuth_one, elevation_two, azimuth_two):
+    def next_move(self, elevation_one, azimuth_one, elevation_two, azimuth_two, speed):
         while self.elevation != elevation_one or self.azimuth != azimuth_one:
             time.sleep(5)
-
+        self.change_speed(speed)
+        
         self.arm_angle_send_goal(elevation_two)
-        self.table_angle_send_goal(azimuth_two)
+        self.table_angle_send_blocking_goal(azimuth_two)
+        
+        self.change_speed(INITIAL_SPEED)
 
     def calibrate(self, elevation, azimuth):
         self.initialize()
@@ -280,6 +289,16 @@ class user_interface_node(Node):
     def initialize(self):
         init_arm = threading.Thread(target=self.initialize_arm)
         init_table = threading.Thread(target=self.initialize_table)
+        
+        init_arm.start()
+        init_table.start()
+        
+        init_arm.join()
+        init_table.join()
+        
+    def change_speed(self, speed):
+        init_arm = threading.Thread(target=self.change_arm_speed, args=(speed,))
+        init_table = threading.Thread(target=self.change_table_speed, args=(speed,))
         
         init_arm.start()
         init_table.start()

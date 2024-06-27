@@ -179,22 +179,23 @@ class ComponentNode(Node):  # TODO: Improve action server implementation
 
     def speed_service_callback(self, request, response):
         """Provides responses for speed adjustment services"""
+        new_speed = request.speed * self.speed_upper_bound
         self.get_logger().info(
-            f"[Service] Received speed adjustment request = {str(self.speed)} -> {str(request.speed)}"
+            f"[Service] Received speed adjustment request = {str(self.speed)} -> {str(new_speed)}"
         )
         if (
-            request.speed >= self.speed_lower_bound
-            and request.speed <= self.speed_upper_bound
+            new_speed >= self.speed_lower_bound
+            and new_speed <= self.speed_upper_bound
         ):  # In valid range
-            self.speed = request.speed
+            self.speed = new_speed
             response.response = True
             self.get_logger().info(
-                f"[Service] Accepted speed adjustment request = {str(request.speed)}"
+                f"[Service] Accepted speed adjustment request = {str(new_speed)}"
             )
         else:  # Not in valid range
             response.response = False
             self.get_logger().info(
-                f"[Service] Rejected speed adjustment request = {str(request.speed)}"
+                f"[Service] Rejected speed adjustment request = {str(new_speed)}"
             )
         return response
     
