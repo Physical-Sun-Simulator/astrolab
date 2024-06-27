@@ -70,7 +70,7 @@ def configuration():
     """ Handle configuration requests. """   
     # Read configuration json
     with open(CONFIGURATION_PATH, 'r') as file:
-        configuration_json = json.load(file)
+        configuration_json = json.loads(file.read())
     
     return configuration_json
 
@@ -108,14 +108,15 @@ def move():
     """ Handle dynamic lighting form submissions. """
     if request.method == 'POST':
         if start_pressed():
-            elevation_one = get_rad('elevation-one')
-            azimuth_one = get_rad('azimuth-one')
-            elevation_two = get_rad('elevation-two')
-            azimuth_two = get_rad('azimuth-two')
-            speed = get_speed(request.form['speed'])
-            node.move(elevation_one, azimuth_one, elevation_two, azimuth_two, speed)
+            elevation_one = float(request.form['elevation-one'])
+            azimuth_one = float(request.form['azimuth-one'])
+            elevation_two = float(request.form['elevation-two'])
+            azimuth_two = float(request.form['azimuth-two'])
+            # speed = get_speed('speed')
+            # node.move(elevation_one, azimuth_one, elevation_two, azimuth_two, speed)
+            node.move(elevation_one, azimuth_one, elevation_two, azimuth_two)
             flash(MOVE_MSG)
-    return redirect("/move")
+    return redirect("/dynamics")
 
 @app.route('/stop', methods = ['POST'])
 def stop():

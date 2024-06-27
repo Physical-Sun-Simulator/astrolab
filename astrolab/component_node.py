@@ -125,10 +125,15 @@ class ComponentNode(Node):  # TODO: Improve action server implementation
                 goal_handle.request.requested_angle, 0
             ):  # Change
                 
-                # Check if cancel
+                # Check if goal is still active
+                if not goal_handle.is_active:
+                    self.get_logger().info(f"[Action] Angle adjustment goal got aborted = {str(goal_handle.request.requested_angle)}")
+                    return Angle.Result()
+                
+                # Check if goal got cancel
                 if goal_handle.is_cancel_requested:
                     goal_handle.canceled()
-                    self.get_logger().info(f"[Action] Angle adjustment goal cancelled = {str(goal_handle.request.requested_angle)}")
+                    self.get_logger().info(f"[Action] Angle adjustment goal canceled = {str(goal_handle.request.requested_angle)}")
                     return Angle.Result()
                 
                 # Publish feedback
@@ -140,6 +145,11 @@ class ComponentNode(Node):  # TODO: Improve action server implementation
                 self.get_logger().info(f"[Action] Current angle = {self.angle}")
                 self.angle += delta
                 time.sleep(1)
+
+            with self.goal_lock:
+                if not goal_handle.is_active:
+                    self.get_logger().info(f"[Action] Angle adjustment goal got aborted = {str(goal_handle.request.requested_angle)}")
+                    return Angle.Result()
 
             goal_handle.succeed()
         else:

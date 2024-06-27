@@ -1,6 +1,7 @@
-import rclpy, math, os, json
+import rclpy, math, os, json, time, threading
 from rclpy.node import Node
 from rclpy.task import Future
+from rclpy.action.client import ClientGoalHandle
 from rclpy.action import ActionClient
 from std_msgs.msg import Float64
 from simulation_interfaces.srv import Initialization, Speed  # type: ignore
@@ -161,7 +162,9 @@ class user_interface_node(Node):
             self.get_logger().info("[Action] Arm angle goal accepted")
 
     def arm_angle_feedback_callback(self, feedback):
-        self.get_logger().info(f"[Action] Received arm angle feedback = {feedback.feedback.current_angle}")
+        self.get_logger().info(
+            f"[Action] Received arm angle feedback = {feedback.feedback.current_angle}"
+        )
 
     def arm_angle_send_goal(self, angle):
         goal_msg = Angle.Goal()
@@ -173,8 +176,10 @@ class user_interface_node(Node):
         self.send_arm_angle_goal_future = self.elevation_action_client.send_goal_async(
             goal_msg, feedback_callback=self.arm_angle_feedback_callback
         )
-        
-        self.send_arm_angle_goal_future.add_done_callback(self.arm_angle_goal_response_callback)
+
+        self.send_arm_angle_goal_future.add_done_callback(
+            self.arm_angle_goal_response_callback
+        )
 
     # -> Table angle
 
@@ -195,7 +200,9 @@ class user_interface_node(Node):
             self.get_logger().info("[Action] Table angle goal accepted")
 
     def table_angle_feedback_callback(self, feedback):
-        self.get_logger().info(f"[Action] Received table angle feedback = {feedback.feedback.current_angle}")
+        self.get_logger().info(
+            f"[Action] Received table angle feedback = {feedback.feedback.current_angle}"
+        )
 
     def table_angle_send_goal(self, angle):
         goal_msg = Angle.Goal()
@@ -207,8 +214,10 @@ class user_interface_node(Node):
         self.send_table_angle_goal_future = self.azimuth_action_client.send_goal_async(
             goal_msg, feedback_callback=self.table_angle_feedback_callback
         )
-        
-        self.send_table_angle_goal_future.add_done_callback(self.table_angle_goal_response_callback)
+
+        self.send_table_angle_goal_future.add_done_callback(
+            self.table_angle_goal_response_callback
+        )
 
     ###########
     # Getters #
@@ -224,13 +233,30 @@ class user_interface_node(Node):
     # High-level options #
     ######################
 
-    def move(self, elevation_one, azimuth_one, elevation_two, azimuth_two, speed):
-        pass
+    def move(self, elevation_one, azimuth_one, elevation_two, azimuth_two):
+        self.arm_angle_send_goal(elevation_one)
+        self.table_angle_send_goal(azimuth_one)
+        threading.Thread(
+            target=self.next_move,
+            kwargs={
+                "elevation_one": elevation_one,
+                "elevation_two": elevation_two,
+                "azimuth_one": azimuth_one,
+                "azimuth_two": azimuth_two
+            },
+        ).start()
+
+    def next_move(self, elevation_one, azimuth_one, elevation_two, azimuth_two):
+        while self.elevation != elevation_one or self.azimuth != azimuth_one:
+            time.sleep(5)
+    
+        self.arm_angle_send_goal(elevation_two)
+        self.table_angle_send_goal(azimuth_two)
 
     def calibrate(self, elevation, azimuth):
         self.arm_angle_send_goal(elevation)
         self.table_angle_send_goal(azimuth)
-        
+
     def simulate(self, latitude, longitude, day, time):
         # Calculate sun position
         equation_of_time = get_equation_of_time(day)
@@ -257,6 +283,7 @@ class user_interface_node(Node):
         self.get_logger().info(f"[Action] Aborting current table angle goal")
         table_angle_future = self.table_angle_goal_handle.cancel_goal_async()
         table_angle_future.add_done_callback(self.table_angle_cancel_done)
+
 
 def main(args=None):
     rclpy.init(args=args)
