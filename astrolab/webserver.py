@@ -5,7 +5,7 @@ import rclpy, math, threading, datetime, sys, json, time, os
 
 # Initialize Flask
 app = Flask(__name__)
-app.secret_key = b"test"
+app.config.from_file("config.json", load=json.load)
 
 # Initialize rclpy
 rclpy.init(args=None)
