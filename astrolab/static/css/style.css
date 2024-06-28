@@ -225,7 +225,7 @@ label,
     vertical-align: text-bottom
 }
 
-#about>h3 {
+#about>a>h3 {
     margin: 0px;
     line-height: 0.5;
     height: inherit;
@@ -233,6 +233,10 @@ label,
     font-size: small;
     color: gray;
     position: relative;
+}
+
+#about>a {
+    text-decoration:none;
 }
 
 #description,

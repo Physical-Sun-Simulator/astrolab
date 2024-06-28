@@ -12,11 +12,11 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="{{url_for('static', filename='js/main.js')}}"></script>
     {% with messages = get_flashed_messages() %}
-        {% if messages %}        
-            {% for message in messages %}
-                <script>alert('{{ message }}')</script>
-            {% endfor %}
-        {% endif %}
+    {% if messages %}
+    {% for message in messages %}
+    <script>alert('{{ message }}')</script>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
 </head>
 
@@ -50,16 +50,20 @@
                 <form id="configuration-positions">
                     <div id="elevation-position">
                         <label for="elevation-position-field">Elevation: </label>
-                        <input type="text" id="elevation-position-field" class="field" name="elevation" value="0.0" readonly/>
+                        <input type="text" id="elevation-position-field" class="field" name="elevation" value="0.0"
+                            readonly />
                     </div>
                     <div id="azimuth-position">
                         <label for="azimuth-position-field">Azimuth: </label>
-                        <input type="text" id="azimuth-position-field" class="field" name="azimuth" value="0.0" readonly/>
+                        <input type="text" id="azimuth-position-field" class="field" name="azimuth" value="0.0"
+                            readonly />
                     </div>
                 </form>
             </div>
             <div id="about">
-                <h3>© Aqiel Oostenbrug</h3>
+                <a href="{{about_link}}">
+                    <h3>{{about_description}}</h3>
+                </a>
             </div>
         </aside>
         <section id="canvas">
