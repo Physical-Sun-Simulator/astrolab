@@ -25,7 +25,7 @@ ABORT_MSG = "Aborting current job"
 CONFIGURATION_INTERVAL = 0.5
 
 # Simplification functions
-get_rad = lambda input: math.radians(float(request.form[input]))
+get_angle = lambda input: float(request.form[input])
 start_pressed = lambda: request.form["button"] == "Start"
 stop_pressed = lambda: request.form["button"] == "Stop"
 get_datetime = lambda input, format: datetime.datetime.strptime(
@@ -45,7 +45,6 @@ get_speed = lambda input: float(request.form[input]) / 100.0
 # Webpages #
 ############
 
-
 @app.route("/")
 @app.route("/simulation")
 def simulation():
@@ -60,7 +59,6 @@ def simulation():
         about_description=ABOUT_DESCRIPTION,
     )
 
-
 @app.route("/calibration")
 def calibration():
     """Handle calibration webpage requests."""
@@ -73,7 +71,6 @@ def calibration():
         about_link=ABOUT_LINK,
         about_description=ABOUT_DESCRIPTION,
     )
-
 
 @app.route("/dynamics")
 def dynamics():
@@ -97,19 +94,17 @@ def configuration():
 
     return configuration_json
 
-
 ###########
 # Actions #
 ###########
-
 
 @app.route("/simulate", methods=["POST"])
 def simulate():
     """Handle simulation form submissions."""
     if request.method == "POST":
         if start_pressed():
-            latitude = float(request.form["latitude"])
-            longitude = float(request.form["longitude"])
+            latitude = get_angle("latitude")
+            longitude = get_angle("longitude")
             day = get_day_number("day")
             time = get_time("time")
             threading.Thread(
@@ -118,28 +113,26 @@ def simulate():
             flash(SIMULATE_MSG)
     return redirect("/simulation")
 
-
 @app.route("/calibrate", methods=["POST"])
 def calibrate():
     """Handle calibration form submissions."""
     if request.method == "POST":
         if start_pressed():
-            elevation = float(request.form["elevation"])
-            azimuth = float(request.form["azimuth"])
+            elevation = get_angle("elevation")
+            azimuth = get_angle("azimuth")
             threading.Thread(target=node.calibrate, args=(elevation, azimuth)).start()
             flash(CALIBRATE_MSG)
     return redirect("/calibration")
-
 
 @app.route("/move", methods=["POST"])
 def move():
     """Handle dynamic lighting form submissions."""
     if request.method == "POST":
         if start_pressed():
-            elevation_one = float(request.form["elevation-one"])
-            azimuth_one = float(request.form["azimuth-one"])
-            elevation_two = float(request.form["elevation-two"])
-            azimuth_two = float(request.form["azimuth-two"])
+            elevation_one = get_angle("elevation-one")
+            azimuth_one = get_angle("azimuth-one")
+            elevation_two = get_angle("elevation-two")
+            azimuth_two = get_angle("azimuth-two")
             speed = get_speed("speed")
             threading.Thread(
                 target=node.move,
@@ -177,7 +170,6 @@ def main():
     # Join threads
     webThread.join()
     nodeThread.join()
-
 
 if __name__ == "__main__":
     main()
