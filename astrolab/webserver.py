@@ -116,7 +116,6 @@ def move():
             elevation_two = float(request.form['elevation-two'])
             azimuth_two = float(request.form['azimuth-two'])
             speed = get_speed('speed')
-            # node.move(elevation_one, azimuth_one, elevation_two, azimuth_two, speed)
             threading.Thread(target=node.move, args=(elevation_one, azimuth_one, elevation_two, azimuth_two, speed)).start()
             flash(MOVE_MSG)
     return redirect("/dynamics")

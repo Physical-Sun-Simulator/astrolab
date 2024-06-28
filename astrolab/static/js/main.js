@@ -41,7 +41,7 @@ function updateConfiguration(path) {
     .then((response) => response.json())
     .then((json) => {
         // Assign json to configuration fields
-        document.getElementById("elevation-position-field").value = json.elevation;
-        document.getElementById("azimuth-position-field").value = json.azimuth;
+        document.getElementById("elevation-position-field").value = Math.round(json.elevation);
+        document.getElementById("azimuth-position-field").value = Math.round(json.azimuth);
     });
 }
