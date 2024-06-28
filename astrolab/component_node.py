@@ -14,9 +14,8 @@ SPEED_SERVICE_NAME = "{name}_speed_service"
 INITIALIZE_SERVICE_NAME = "{name}_initialize_service"
 ANGLE_ACTION_NAME = "{name}_angle_action"
 
-
-class ComponentNode(Node):  # TODO: Improve action server implementation
-    """Class that provides common functionalities for rotating components on the Physical Sunlight Simulator"""
+class MotorNode(Node):
+    """ Node with common functionalities for motor components on the Physical Sunlight Simulator. """
 
     def __init__(
         self,

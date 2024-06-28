@@ -1,5 +1,5 @@
 import rclpy, sys
-from astrolab.component_node import ComponentNode
+from astrolab.component_node import MotorNode
 from rclpy.executors import MultiThreadedExecutor, ExternalShutdownException
 
 # Constants
@@ -12,7 +12,7 @@ ANGLE_UPPER_BOUND = 360.0
 SPEED_LOWER_BOUND = 0.0
 SPEED_UPPER_BOUND = 0.4
 
-class TableNode(ComponentNode):
+class TableNode(MotorNode):
     """ Node for the table of the Physical Sunlight Simulator. """
 
     def __init__(self):

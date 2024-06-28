@@ -1,5 +1,5 @@
 import rclpy, sys
-from astrolab.component_node import ComponentNode
+from astrolab.component_node import MotorNode
 from rclpy.executors import MultiThreadedExecutor, ExternalShutdownException
 
 # Constants
@@ -12,7 +12,7 @@ ANGLE_UPPER_BOUND = 90.0
 SPEED_LOWER_BOUND = 0.0
 SPEED_UPPER_BOUND = 0.6
 
-class ArmNode(ComponentNode):
+class ArmNode(MotorNode):
     """ Node for the arm of the Physical Sunlight Simulator. """
 
     def __init__(self):
