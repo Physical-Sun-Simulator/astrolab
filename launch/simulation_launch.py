@@ -30,6 +30,14 @@ def generate_launch_description():
             arguments=[urdf]),
         Node(
             package='astrolab',
+            executable='digital_twin',
+            name='digital_twin',
+            output='screen'),
+        ExecuteProcess(
+            cmd=['rviz2', '-d', 'install/astrolab/share/astrolab/dt.rviz'],
+            name='rviz'),
+        Node(
+            package='astrolab',
             executable='arm',
             name='arm',
             output='screen'),
@@ -38,16 +46,8 @@ def generate_launch_description():
             executable='table',
             name='table',
             output='screen'),
-        # Node(
-        #     package='astrolab',
-        #     executable='user_interface',
-        #     name='user_interface',
-        #     output='screen'),
         ExecuteProcess(
             cmd=['python3', 'src/astrolab/webserver/webserver.py'],
             name='webserver',
             output='screen'),
-        ExecuteProcess(
-            cmd=['rviz2', '-d', 'install/astrolab/share/astrolab/dt.rviz'],
-            name='rviz'),
     ])
