@@ -44,7 +44,7 @@ def generate_launch_description():
         #     name='user_interface',
         #     output='screen'),
         ExecuteProcess(
-            cmd=['python3', 'src/astrolab/astrolab/webserver.py'],
+            cmd=['python3', 'src/astrolab/webserver/webserver.py'],
             name='webserver',
             output='screen'),
         ExecuteProcess(

@@ -3,16 +3,6 @@ from flask import Flask, request, render_template, redirect, flash
 from astrolab.user_interface_node import user_interface_node
 import rclpy, math, threading, datetime, sys, json, time, os
 
-# Initialize Flask
-app = Flask(__name__)
-app.config.from_file("config.json", load=json.load)
-
-# Initialize rclpy
-rclpy.init(args=None)
-
-# Global variables
-node = user_interface_node()
-
 # Constants
 PRODUCT_NAME = "αstrolaβ"
 ABOUT_LINK = "https://github.com/Physical-Sun-Simulator"
@@ -23,6 +13,17 @@ CALIBRATE_MSG = "Starting calibration"
 MOVE_MSG = "Starting dynamic lighting"
 ABORT_MSG = "Aborting current job"
 CONFIGURATION_INTERVAL = 0.5
+FLASK_CONFIG_PATH = "config.json"
+
+# Initialize Flask
+app = Flask(__name__)
+app.config.from_file(FLASK_CONFIG_PATH, load=json.load)
+
+# Initialize rclpy
+rclpy.init(args=None)
+
+# Global variables
+node = user_interface_node()
 
 # Simplification functions
 get_angle = lambda input: float(request.form[input])
