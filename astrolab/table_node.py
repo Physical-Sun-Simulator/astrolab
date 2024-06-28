@@ -13,7 +13,7 @@ SPEED_LOWER_BOUND = 0.0
 SPEED_UPPER_BOUND = 0.4
 
 class TableNode(ComponentNode):
-    """Class that provides a node for the table of the Physical Sunlight Simulator"""
+    """ Node for the table of the Physical Sunlight Simulator. """
 
     def __init__(self):
         super().__init__(
@@ -27,19 +27,24 @@ class TableNode(ComponentNode):
             speed_upper_bound=SPEED_UPPER_BOUND,
         )
 
-def main(args=None):
-    rclpy.init(args=args)
+def main():
+    """ First function to be executed. """
+    # Initialize rclpy
+    rclpy.init(args=None)
+    
+    # Node control flow
     try:
+        # Start node
         node = TableNode()
-        executor = MultiThreadedExecutor()
-        rclpy.spin(node, executor=executor)
+        rclpy.spin(node, executor=MultiThreadedExecutor())
     except KeyboardInterrupt:
+        # Ignore
         pass
     except ExternalShutdownException:
+        # Graceful termination
         node.destroy_node()
         rclpy.shutdown()
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()
