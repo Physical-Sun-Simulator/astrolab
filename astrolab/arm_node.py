@@ -27,10 +27,10 @@ class ArmNode(MotorNode):
             speed_upper_bound=SPEED_UPPER_BOUND,
         )
 
-def main(args=None):
+def main():
     """ First function to be executed. """
     # Initialize rclpy
-    rclpy.init(args=args)
+    rclpy.init(args=None)
     
     # Node control flow
     try:
