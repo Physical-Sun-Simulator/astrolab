@@ -14,6 +14,15 @@ MOVE_MSG = "Starting dynamic lighting"
 ABORT_MSG = "Aborting current job"
 CONFIGURATION_INTERVAL = 0.5
 FLASK_CONFIG_PATH = "config.json"
+SIMULATION_TEMPLATE_PATH = "simulation.html"
+SIMULATION_TITLE = "Simulation"
+SIMULATION_CANVAS_TEMPLATE_PATH = "map.html"
+CALIBRATION_TEMPLATE_PATH = "calibration.html"
+CALIBRATION_TITLE = "Calibration"
+CALIBRATION_CANVAS_TEMPLATE_PATH = "explanation.html"
+DYNAMICS_TEMPLATE_PATH = "dynamics.html"
+DYNAMICS_TITLE = "Dynamics"
+DYNAMICS_CANVAS_TEMPLATE_PATH = "explanation.html"
 
 # Initialize Flask
 app = Flask(__name__)
@@ -49,47 +58,46 @@ get_speed = lambda input: float(request.form[input]) / 100.0
 @app.route("/")
 @app.route("/simulation")
 def simulation():
-    """Handle simulation webpage requests."""
+    """ Handle simulation webpage requests. """
     return render_template(
-        "simulation.html",
-        title="Simulation",
+        SIMULATION_TEMPLATE_PATH,
+        title=SIMULATION_TITLE,
         name=PRODUCT_NAME,
         options=OPTIONS,
-        canvas_component="map.html",
+        canvas_component=SIMULATION_CANVAS_TEMPLATE_PATH,
         about_link=ABOUT_LINK,
         about_description=ABOUT_DESCRIPTION,
     )
 
 @app.route("/calibration")
 def calibration():
-    """Handle calibration webpage requests."""
+    """ Handle calibration webpage requests. """
     return render_template(
-        "calibration.html",
-        title="Calibration",
+        CALIBRATION_TEMPLATE_PATH,
+        title=CALIBRATION_TITLE,
         name=PRODUCT_NAME,
         options=OPTIONS,
-        canvas_component="explanation.html",
+        canvas_component=CALIBRATION_CANVAS_TEMPLATE_PATH,
         about_link=ABOUT_LINK,
         about_description=ABOUT_DESCRIPTION,
     )
 
 @app.route("/dynamics")
 def dynamics():
-    """Handle dynamic lighting webpage requests."""
+    """ Handle dynamic lighting webpage requests. """
     return render_template(
-        "dynamics.html",
-        title="Dynamics",
+        DYNAMICS_TEMPLATE_PATH,
+        title=DYNAMICS_TITLE,
         name=PRODUCT_NAME,
         options=OPTIONS,
-        canvas_component="explanation.html",
+        canvas_component=DYNAMICS_CANVAS_TEMPLATE_PATH,
         about_link=ABOUT_LINK,
         about_description=ABOUT_DESCRIPTION,
     )
 
-
 @app.route("/configuration")
 def configuration():
-    """Handle configuration requests."""
+    """ Handle configuration requests. """
     configuration = {"elevation": node.get_elevation(), "azimuth": node.get_azimuth()}
     configuration_json = json.dumps(configuration)
 
@@ -108,6 +116,7 @@ def simulate():
             longitude = get_angle("longitude")
             day = get_day_number("day")
             time = get_time("time")
+            # Start simulation asynchronously
             threading.Thread(
                 target=node.simulate, args=(latitude, longitude, day, time)
             ).start()
@@ -121,6 +130,7 @@ def calibrate():
         if start_pressed():
             elevation = get_angle("elevation")
             azimuth = get_angle("azimuth")
+            # Start simulation asynchronously
             threading.Thread(target=node.calibrate, args=(elevation, azimuth)).start()
             flash(CALIBRATE_MSG)
     return redirect("/calibration")
@@ -135,6 +145,7 @@ def move():
             elevation_two = get_angle("elevation-two")
             azimuth_two = get_angle("azimuth-two")
             speed = get_speed("speed")
+            # Start simulation asynchronously
             threading.Thread(
                 target=node.move,
                 args=(elevation_one, azimuth_one, elevation_two, azimuth_two, speed),
@@ -146,7 +157,8 @@ def move():
 @app.route("/stop", methods=["POST"])
 def stop():
     """Stop current job."""
-    node.abort()
+    # Start abort asynchronously
+    threading.Thread(target=node.abort).start()
     flash(ABORT_MSG)
     return redirect(request.referrer)
 
