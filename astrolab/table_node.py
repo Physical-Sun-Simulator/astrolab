@@ -4,7 +4,7 @@ from rclpy.executors import MultiThreadedExecutor, ExternalShutdownException
 
 # Constants
 NAME = 'table'
-INITIAL_ANGLE = 0
+INITIAL_ANGLE = 0.0
 INITIAL_SPEED = 0.2
 QOS_PROFILE = 10
 ANGLE_LOWER_BOUND = 0.0
