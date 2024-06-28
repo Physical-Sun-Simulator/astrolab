@@ -1,7 +1,7 @@
 # Libraries
 from flask import Flask, request, render_template, redirect, flash
 from astrolab.user_interface_node import user_interface_node
-import rclpy, math, threading, datetime, sys, json, time, os
+import rclpy, threading, datetime, json
 
 # Constants
 PRODUCT_NAME = "αstrolaβ"
@@ -109,7 +109,7 @@ def configuration():
 
 @app.route("/simulate", methods=["POST"])
 def simulate():
-    """Handle simulation form submissions."""
+    """ Handle simulation form submissions. """
     if request.method == "POST":
         if start_pressed():
             latitude = get_angle("latitude")
@@ -125,7 +125,7 @@ def simulate():
 
 @app.route("/calibrate", methods=["POST"])
 def calibrate():
-    """Handle calibration form submissions."""
+    """ Handle calibration form submissions. """
     if request.method == "POST":
         if start_pressed():
             elevation = get_angle("elevation")
@@ -137,7 +137,7 @@ def calibrate():
 
 @app.route("/move", methods=["POST"])
 def move():
-    """Handle dynamic lighting form submissions."""
+    """ Handle dynamic lighting form submissions. """
     if request.method == "POST":
         if start_pressed():
             elevation_one = get_angle("elevation-one")
@@ -156,7 +156,7 @@ def move():
 
 @app.route("/stop", methods=["POST"])
 def stop():
-    """Stop current job."""
+    """ Stop current job. """
     # Start abort asynchronously
     threading.Thread(target=node.abort).start()
     flash(ABORT_MSG)
@@ -167,7 +167,7 @@ def stop():
 #########
 
 def main():
-    """First function to be executed."""
+    """ First function to be executed. """
     # Initialize threads
     nodeThread = threading.Thread(target=rclpy.spin, name="node_thread", args=(node,))
     webThread = threading.Thread(
@@ -175,7 +175,7 @@ def main():
         name="web_thread",
         kwargs={"debug": False, "use_reloader": False},
     )
-
+    
     # Start threads
     webThread.start()
     nodeThread.start()
