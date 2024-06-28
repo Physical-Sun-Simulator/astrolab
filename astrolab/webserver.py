@@ -23,8 +23,6 @@ CALIBRATE_MSG = "Starting calibration"
 MOVE_MSG = "Starting dynamic lighting"
 ABORT_MSG = "Aborting current job"
 CONFIGURATION_INTERVAL = 0.5
-BASE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
-CONFIGURATION_PATH = os.path.join(BASE_DIRECTORY, "data/configuration.json")
 
 # Simplification functions
 get_rad = lambda input: math.radians(float(request.form[input]))
@@ -117,7 +115,6 @@ def simulate():
             threading.Thread(
                 target=node.simulate, args=(latitude, longitude, day, time)
             ).start()
-            # TODO: Add calculated elevation and azimuth angle to simulation msg
             flash(SIMULATE_MSG)
     return redirect("/simulation")
 
@@ -159,11 +156,9 @@ def stop():
     flash(ABORT_MSG)
     return redirect(request.referrer)
 
-
 #########
 # Setup #
 #########
-
 
 def main():
     """First function to be executed."""
