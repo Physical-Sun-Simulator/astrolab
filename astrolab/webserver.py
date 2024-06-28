@@ -68,9 +68,12 @@ def dynamics():
 @app.route('/configuration')
 def configuration():
     """ Handle configuration requests. """   
-    # Read configuration json
-    with open(CONFIGURATION_PATH, 'r') as file:
-        configuration_json = json.loads(file.read())
+    configuration = {
+        "elevation": node.get_elevation(),
+        "azimuth": node.get_azimuth()
+    }
+    
+    configuration_json = json.dumps(configuration)
     
     return configuration_json
 
@@ -125,28 +128,15 @@ def stop():
     flash(ABORT_MSG)
     return redirect(request.referrer)
 
-###############
-# Inaccesible #
-###############
-
-def update_configuration():
-    """ Update configuration information. """
-    configuration = {
-        "elevation": node.get_elevation(),
-        "azimuth": node.get_azimuth()
-    }
-    
-    configuration_json = json.dumps(configuration)
-    
-    with open(CONFIGURATION_PATH, "w") as file:
-        file.write(configuration_json)
+#########
+# Setup #
+#########
     
 def main():
     """ First function to be executed. """
     # Initialize threads
     nodeThread = threading.Thread(target=rclpy.spin, name='node_thread', args=(node,))
     webThread = threading.Thread(target=app.run, name='web_thread', kwargs={"debug":False, 'use_reloader':False})
-    node.create_timer(CONFIGURATION_INTERVAL, update_configuration)
     
     # Start threads
     webThread.start()
@@ -158,4 +148,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
