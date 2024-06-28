@@ -2,20 +2,29 @@ import rclpy, sys
 from astrolab.component_node import ComponentNode
 from rclpy.executors import MultiThreadedExecutor, ExternalShutdownException
 
+# Constants
+NAME = 'table'
+INITIAL_ANGLE = 0
+INITIAL_SPEED = 0.2
+QOS_PROFILE = 10
+ANGLE_LOWER_BOUND = 0.0
+ANGLE_UPPER_BOUND = 360.0
+SPEED_LOWER_BOUND = 0.0
+SPEED_UPPER_BOUND = 0.4
 
-class TableNode(ComponentNode):  # TODO: Incorporate into component_node
+class TableNode(ComponentNode):
     """Class that provides a node for the table of the Physical Sunlight Simulator"""
 
     def __init__(self):
         super().__init__(
-            name="table",
-            angle=0.0,
-            speed=0.2,
-            qos_profile=10,
-            angle_lower_bound=0.0,
-            angle_upper_bound=360.0,
-            speed_lower_bound=0.0,
-            speed_upper_bound=0.4,
+            name=NAME,
+            angle=INITIAL_ANGLE,
+            speed=INITIAL_SPEED,
+            qos_profile=QOS_PROFILE,
+            angle_lower_bound=ANGLE_LOWER_BOUND,
+            angle_upper_bound=ANGLE_UPPER_BOUND,
+            speed_lower_bound=SPEED_LOWER_BOUND,
+            speed_upper_bound=SPEED_UPPER_BOUND,
         )
 
 def main(args=None):
