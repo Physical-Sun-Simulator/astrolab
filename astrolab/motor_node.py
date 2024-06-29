@@ -1,3 +1,4 @@
+# Libraries
 import time, threading
 from rclpy.node import Node
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
@@ -162,16 +163,6 @@ class MotorNode(Node):
 
         return result
 
-    def initialize_topic_values(self):
-        angle_msg = Float64()
-        speed_msg = Float64()
-        angle_msg.data = self.angle
-        speed_msg.data = self.speed
-        self.angle_topic_publisher.publish(angle_msg)
-        self.speed_topic_publisher.publish(speed_msg)
-        self.get_logger().info(f"[Topic] Published angle = {str(angle_msg.data)}")
-        self.get_logger().info(f"[Topic] Published speed = {str(speed_msg.data)}")
-
     def speed_service_callback(self, request, response):
         """Provides responses for speed adjustment services"""
         new_speed = request.speed * self.speed_upper_bound
@@ -187,6 +178,9 @@ class MotorNode(Node):
             self.get_logger().info(
                 f"[Service] Accepted speed adjustment request = {str(new_speed)}"
             )
+            speed_msg = Float64()
+            speed_msg.data = request.speed
+            self.angle_topic_publisher.publish(speed_msg)
         else:  # Not in valid range
             response.response = False
             self.get_logger().info(

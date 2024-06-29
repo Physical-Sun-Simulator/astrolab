@@ -1,6 +1,6 @@
 # Libraries
 from flask import Flask, request, render_template, redirect, flash
-from astrolab.user_interface_node import user_interface_node
+from astrolab.user_interface_node import UserInterfaceNode
 import rclpy, threading, datetime, json
 
 # Constants
@@ -23,6 +23,7 @@ CALIBRATION_CANVAS_TEMPLATE_PATH = "explanation.html"
 DYNAMICS_TEMPLATE_PATH = "dynamics.html"
 DYNAMICS_TITLE = "Dynamics"
 DYNAMICS_CANVAS_TEMPLATE_PATH = "explanation.html"
+NAME = "webserver"
 
 # Initialize Flask
 app = Flask(__name__)
@@ -32,7 +33,7 @@ app.config.from_file(FLASK_CONFIG_PATH, load=json.load)
 rclpy.init(args=None)
 
 # Global variables
-node = user_interface_node()
+node = UserInterfaceNode(NAME)
 
 # Simplification functions
 get_angle = lambda input: float(request.form[input])
@@ -98,7 +99,7 @@ def dynamics():
 @app.route("/configuration")
 def configuration():
     """ Handle configuration requests. """
-    configuration = {"elevation": node.get_elevation(), "azimuth": node.get_azimuth()}
+    configuration = {"elevation": node.get_arm_angle(), "azimuth": node.get_table_angle()}
     configuration_json = json.dumps(configuration)
 
     return configuration_json
@@ -169,20 +170,19 @@ def stop():
 def main():
     """ First function to be executed. """
     # Initialize threads
-    nodeThread = threading.Thread(target=rclpy.spin, name="node_thread", args=(node,))
-    webThread = threading.Thread(
+    node_thread = threading.Thread(target=rclpy.spin, args=(node,))
+    web_thread = threading.Thread(
         target=app.run,
-        name="web_thread",
         kwargs={"debug": False, "use_reloader": False},
     )
     
     # Start threads
-    webThread.start()
-    nodeThread.start()
+    web_thread.start()
+    node_thread.start()
 
     # Join threads
-    webThread.join()
-    nodeThread.join()
+    web_thread.join()
+    node_thread.join()
 
 if __name__ == "__main__":
     main()

@@ -31,7 +31,7 @@ def generate_launch_description():
         Node(
             package='astrolab',
             executable='visualization',
-            name='visualization',
+            name='visualization_node',
             output='screen'),
         ExecuteProcess(
             cmd=['rviz2', '-d', 'install/astrolab/share/astrolab/dt.rviz'],
@@ -39,12 +39,12 @@ def generate_launch_description():
         Node(
             package='astrolab',
             executable='arm',
-            name='arm',
+            name='arm_node',
             output='screen'),
         Node(
             package='astrolab',
             executable='table',
-            name='table',
+            name='table_node',
             output='screen'),
         ExecuteProcess(
             cmd=['python3', 'src/astrolab/webserver/webserver.py'],
