@@ -77,10 +77,6 @@ class MotorNode(Node):
         self.speed_lower_bound = speed_lower_bound
         self.speed_upper_bound = speed_upper_bound
 
-        # Initialize topics
-        time.sleep(1)
-        self.initialize_topic_values()
-
     def angle_goal_callback(self, goal_request):
             """Accept or reject a client request to begin an action."""
             # Check if valid request
