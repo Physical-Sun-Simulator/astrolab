@@ -1,3 +1,5 @@
+# By Aqiel Oostenbrug (Jun 29, 2024)
+
 # Libraries
 import rclpy, math, os, threading, sys, rclpy.executors
 from rclpy.node import Node

@@ -1,3 +1,6 @@
+# By Aqiel Oostenbrug (Jun 29, 2024)
+
+# Libraries
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -6,15 +9,16 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
-
+    """ Launches described elements. """
+    # Initialize variables
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     urdf_file_name = 'dt.urdf.xml'
     urdf = os.path.join(
         get_package_share_directory('astrolab'),
         urdf_file_name)
     
-    with open(urdf, 'r') as infp:
-        robot_desc = infp.read()
+    with open(urdf, 'r') as file:
+        robot_desc = file.read()
 
     return LaunchDescription([
         DeclareLaunchArgument(

@@ -1,3 +1,5 @@
+# By Aqiel Oostenbrug (Jun 29, 2024)
+
 # Libraries
 from flask import Flask, request, render_template, redirect, flash
 from astrolab.user_interface_node import UserInterfaceNode

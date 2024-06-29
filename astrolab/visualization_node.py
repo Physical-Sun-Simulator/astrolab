@@ -1,3 +1,5 @@
+# By Aqiel Oostenbrug (Jun 29, 2024)
+
 # Libraries
 import rclpy, math, sys
 import rclpy.executors

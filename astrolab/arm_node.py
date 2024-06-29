@@ -1,3 +1,5 @@
+# By Aqiel Oostenbrug (Jun 29, 2024)
+
 # Libraries
 import rclpy, sys
 from astrolab.component_node import MotorNode
