@@ -1,5 +1,5 @@
 # Libraries
-import rclpy, math, os, time, threading, sys, rclpy.executors
+import rclpy, math, os, threading, sys, rclpy.executors
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from std_msgs.msg import Float64
