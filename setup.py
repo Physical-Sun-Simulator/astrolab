@@ -27,7 +27,7 @@ setup(
             'user_interface = astrolab.user_interface_node:main',
             'arm = astrolab.arm_node:main',
             'table = astrolab.table_node:main',
-            'digital_twin = astrolab.digital_twin_node:main',
+            'visualization = astrolab.visualization_node:main',
             'state_publisher = prototype.state_publisher:main'
         ],
     },

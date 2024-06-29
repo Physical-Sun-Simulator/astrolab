@@ -30,8 +30,8 @@ def generate_launch_description():
             arguments=[urdf]),
         Node(
             package='astrolab',
-            executable='digital_twin',
-            name='digital_twin',
+            executable='visualization',
+            name='visualization',
             output='screen'),
         ExecuteProcess(
             cmd=['rviz2', '-d', 'install/astrolab/share/astrolab/dt.rviz'],
