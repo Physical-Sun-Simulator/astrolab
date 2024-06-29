@@ -32,7 +32,7 @@ class VisualizationNode(Node):
         self.transformation_broadcaster = TransformBroadcaster(self, qos=TOPIC_QOS_PROFILE)
         self.joint_state_publisher = self.create_publisher(JOINT_MESSAGE_TYPE, JOINT_TOPIC_NAME, TOPIC_QOS_PROFILE)
         
-        # Topic subscription
+        # Topic subscriptions
         self.arm_angle_subscription = self.create_subscription(
             ANGLE_MSG_TYPE,
             ARM_ANGLE_TOPIC_NAME,
