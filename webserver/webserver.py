@@ -1,7 +1,7 @@
 # Libraries
 from flask import Flask, request, render_template, redirect, flash
 from astrolab.user_interface_node import UserInterfaceNode
-import rclpy, threading, datetime, json
+import rclpy, threading, datetime, json, rclpy.executors, sys
 
 # Constants
 PRODUCT_NAME = "αstrolaβ"
@@ -169,20 +169,31 @@ def stop():
 
 def main():
     """ First function to be executed. """
-    # Initialize threads
-    node_thread = threading.Thread(target=rclpy.spin, args=(node,))
-    web_thread = threading.Thread(
-        target=app.run,
-        kwargs={"debug": False, "use_reloader": False},
-    )
-    
-    # Start threads
-    web_thread.start()
-    node_thread.start()
+    # Node control flow
+    try:
+        # Initialize threads
+        node_thread = threading.Thread(target=rclpy.spin, args=(node,))
+        web_thread = threading.Thread(
+            target=app.run,
+            kwargs={"debug": False, "use_reloader": False},
+        )
+        
+        # Start threads
+        web_thread.start()
+        node_thread.start()
 
-    # Join threads
-    web_thread.join()
-    node_thread.join()
+        # Join threads
+        web_thread.join()
+        node_thread.join()
+    except KeyboardInterrupt:
+        # Ignore
+        pass
+    except rclpy.executors.ExternalShutdownException:
+        # Graceful termination
+        request.environ.get('werkzeug.server.shutdown')
+        node.destroy_node()
+        rclpy.shutdown()
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
