@@ -97,6 +97,9 @@ class VisualizationNode(Node):
         # Publish joint state
         self.joint_state_publisher.publish(joint_state)
 
+#########
+# Setup #
+#########
 
 def main():
     """ First function to be executed. """
