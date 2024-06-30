@@ -57,13 +57,19 @@ mkdir -p ros2_ws/src
 cd ros2_ws
 ```
 
-7. Make a virtual environment:
+7. Make a python virtual environment:
 
 ```bash
 python3 -m venv venv
 ```
 
-8. Generate the requirements:
+8. Start the python virtual environment:
+
+```bash
+source venv/bin/activate
+```
+
+9. Generate the requirements:
 
 ```bash
 echo "action-msgs==1.6.0
@@ -243,44 +249,43 @@ Werkzeug==3.0.3
 xacro==2.0.9" >> requirements.txt
 ```
 
-9. Install the requirements:
+10. Install the requirements:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-10. Navigate to the src directory:
+11. Navigate to the src directory:
 
 ```bash
 cd src
 ```
 
-11. Clone the astrolab repository in the src directory:
+12. Clone the astrolab repository in the src directory:
 
 ```bash
 git clone https://github.com/Physical-Sun-Simulator/astrolab
 ```
 
-12. Clone the simulation_interfaces repository in the src directory:
+13. Clone the simulation_interfaces repository in the src directory:
 
 ```bash
 git clone https://github.com/Physical-Sun-Simulator/simulation_interfaces
 ```
 
-13. Return to the `ros2_ws` directory.
+14. Return to the `ros2_ws` directory.
 
 ```bash
 cd ..
 ```
 
-14. Start the virtual environments:
+15. Start the bash virtual environment:
 
 ```bash
 source install/setup.bash
-source venv/bin/activate
 ```
 
-15. Build the packages (and make sure that there are no significant errors: it prints `Summary: 2 packages finished`):
+16. Build the packages (and make sure that there are no significant errors: it prints `Summary: 2 packages finished`):
 
 ```bash
 colcon build
