@@ -419,6 +419,7 @@ rqt
 
 ## Other options to control the Physical Sun simulator
 
+- Send your own requests to the ROS nodes as explained in the [ros docs](https://docs.ros.org/).
 - See [kinematics](https://github.com/Physical-Sun-Simulator/kinematics) for a simple control script.
 - Use the pin scheme below and control the machine yourself using [gpiozero](https://pypi.org/project/gpiozero/) or [libgpio](https://github.com/brgl/libgpiod)
 
