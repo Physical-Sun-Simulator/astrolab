@@ -1,6 +1,6 @@
 # astrolab
 
-ROS2 package which provides the webserver (UI), arm, table and (limited 3D) visualizer nodes, a limited digital twin implementation of the Physical Sun Simulators behaviour, and the connections to the Physical Sunlight Simulator. Note that the following guides were written for Ubuntu 22.04.
+ROS2 package which provides the webserver (UI), arm, table and (limited 3D) visualizer nodes, a limited digital twin implementation of the Physical Sun Simulators behaviour, and the connections to the Physical Sunlight Simulator. Note that the following guides were written for Ubuntu 22.04 and has been extended for Ubuntu 24.04.
 
 ## Table of Contents
 
@@ -12,11 +12,18 @@ ROS2 package which provides the webserver (UI), arm, table and (limited 3D) visu
 
 ## How to install
 
-1. Install ROS2 Iron Irwini as described [here](https://docs.ros.org/en/iron/Installation/Ubuntu-Install-Debians.html).
+1. Install ROS2 Iron Irwini as described [here](https://docs.ros.org/en/iron/Installation/Ubuntu-Install-Debians.html) (and for Ubuntu 24.04: [here](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debians.html)).
 2. Setup your (bash) terminal environment for ROS2:
 
 ```bash
 echo "source /opt/ros/iron/setup.bash" >> ~/.bashrc
+echo "export ROS_DOMAIN_ID=8" >> ~/.bashrc
+```
+
+and for Ubuntu 24.04:
+
+```bash
+echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 echo "export ROS_DOMAIN_ID=8" >> ~/.bashrc
 ```
 
@@ -30,6 +37,12 @@ sudo apt install python3-colcon-common-extensions
 
 ```bash
 sudo apt-get install ros-iron-rviz2 ros-iron-tf2-ros ros-iron-tf2-tools
+```
+
+and for Ubuntu 24.04:
+
+```bash
+sudo apt-get install ros-jazzy-rviz2 ros-jazzy-tf2-ros ros-jazzy-tf2-tools
 ```
 
 5. Make a ROS2 workspace somewhere in your filesystem:
@@ -346,6 +359,13 @@ sudo apt update
 sudo apt install '~nros-iron-rqt*'
 ```
 
+and for Ubuntu 24.04:
+
+```bash
+sudo apt update
+sudo apt install '~nros-jazzy-rqt*'
+```
+
 2. Start the bash virtual environment in the workspace directory:
 
 ```bash
@@ -374,6 +394,13 @@ rqt
 ```bash
 sudo apt update
 sudo apt install '~nros-iron-rqt*'
+```
+
+and for Ubuntu 24.04:
+
+```bash
+sudo apt update
+sudo apt install '~nros-jazzy-rqt*'
 ```
 
 2. Start the bash virtual environment in the workspace directory:
